@@ -1,6 +1,7 @@
 import { ArrowRight, Home as HomeIcon, Mail, MapPin, Phone } from "lucide-react";
 import { Btn, Eyebrow, Reveal } from "./ui";
 import { Bodywork, Exterior, Hero, How, Marquee, NextSteps, PageIntro, Services, Story, Visit } from "./Sections";
+import { HomeTestimonials, TestimonialWall } from "./Testimonials";
 import { DIRECTIONS, MAILTO, PHONE, SERVICES, TEL, img, page } from "./data";
 
 const years = new Date().getFullYear() - 1969;
@@ -50,6 +51,7 @@ export function HomePage() {
       <Hero />
       <Marquee />
       <Overview />
+      <HomeTestimonials />
       <Exterior />
     </>
   );
@@ -140,6 +142,29 @@ export function ContactPage() {
       </PageIntro>
       <Visit />
       <Exterior />
+    </>
+  );
+}
+
+export function TestimonialsPage() {
+  return (
+    <>
+      <PageIntro
+        eyebrow="Customer testimonials"
+        title="What our customers say"
+        lead="A few words from the people who bring their cars to George Street. Printed exactly as they wrote them."
+        image="garage-outside.jpg"
+      >
+        <Btn href={TEL} testId="button-intro-call"><Phone className="h-4 w-4" /> Call {PHONE}</Btn>
+        <Btn href={page("/contact")} variant="light" testId="button-intro-contact">Hours &amp; directions</Btn>
+      </PageIntro>
+      <TestimonialWall />
+      <NextSteps
+        items={[
+          { id: "team", href: page("/our-team"), label: "Meet the team", line: "The familiar faces behind the service people talk about." },
+          { id: "contact", href: page("/contact"), label: "Book your car in", line: `Ring ${PHONE} or email, and we'll find a time that suits.` },
+        ]}
+      />
     </>
   );
 }

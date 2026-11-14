@@ -1,7 +1,7 @@
 import type { JSX } from "react";
 import { Header } from "@/components/site/Header";
 import { Footer, MobileCallBar } from "@/components/site/Sections";
-import { AboutPage, BodyworkPage, ContactPage, HomePage, NotFoundPage, ServicesPage } from "@/components/site/Pages";
+import { AboutPage, BodyworkPage, ContactPage, HomePage, NotFoundPage, ServicesPage, TestimonialsPage } from "@/components/site/Pages";
 import { TeamPage } from "@/components/site/TeamPage";
 import { resolveRoute, type RouteKey } from "@/components/site/data";
 
@@ -12,6 +12,7 @@ const PAGES: Record<RouteKey, () => JSX.Element> = {
   about: AboutPage,
   team: TeamPage,
   contact: ContactPage,
+  testimonials: TestimonialsPage,
   notfound: NotFoundPage,
 };
 

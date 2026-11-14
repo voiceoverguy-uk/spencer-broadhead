@@ -3,17 +3,8 @@ import { Menu, Phone, X } from "lucide-react";
 import { NAV, PHONE, TEL, img, page, type RouteKey } from "./data";
 
 export function Header({ current }: { current: RouteKey }) {
-  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const btnRef = useRef<HTMLButtonElement>(null);
-  const solid = scrolled || current !== "home";
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -37,14 +28,12 @@ export function Header({ current }: { current: RouteKey }) {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
-        solid || open ? "bg-[#1C2759]/95 backdrop-blur-md shadow-[0_8px_30px_-18px_rgba(0,0,0,.6)]" : "bg-transparent"
-      }`}
+      className="fixed inset-x-0 top-0 z-50 border-b border-secondary/10 bg-white shadow-[0_8px_30px_-24px_rgba(28,39,89,.4)]"
     >
       <div className="mx-auto flex h-[76px] max-w-7xl items-center justify-between px-5 md:px-8">
         <a href={page("/")} data-testid="link-home" className="flex items-center gap-3" aria-label="Spencer & Broadhead, home" aria-current={current === "home" ? "page" : undefined}>
-          <img src={img("original-logo.png")} alt="" width="250" height="105" className="h-9 w-auto md:h-10" />
-          <span className="hidden border-l border-white/20 pl-3 font-mono text-[10px] uppercase leading-tight tracking-[0.18em] text-white/60 lg:block">
+          <img src={img("original-logo.png")} alt="" width="250" height="105" className="h-12 w-auto md:h-[52px]" />
+          <span className="hidden border-l border-secondary/20 pl-3 font-mono text-[10px] uppercase leading-tight tracking-[0.18em] text-secondary/70 xl:block">
             Wakefield
             <br />
             Est. 1969
@@ -60,11 +49,11 @@ export function Header({ current }: { current: RouteKey }) {
                 href={n.href}
                 aria-current={on ? "page" : undefined}
                 data-testid={`link-nav-${n.key}`}
-                className={`relative whitespace-nowrap px-2 py-2 text-[14px] font-semibold lg:px-3 lg:text-[15px] transition-colors ${on ? "text-white" : "text-white/70 hover:text-white"}`}
+                className={`relative whitespace-nowrap px-2 py-2 text-[14px] font-semibold lg:px-3 lg:text-[15px] transition-colors ${on ? "text-primary" : "text-secondary/80 hover:text-primary"}`}
               >
                 {n.label}
                 <span
-                  className={`absolute inset-x-2 lg:inset-x-3 -bottom-0.5 h-[2px] origin-left bg-[#F4C430] transition-transform duration-300 ${on ? "scale-x-100" : "scale-x-0"}`}
+                  className={`absolute inset-x-2 lg:inset-x-3 -bottom-0.5 h-[2px] origin-left bg-primary transition-transform duration-300 ${on ? "scale-x-100" : "scale-x-0"}`}
                 />
               </a>
             );
@@ -87,7 +76,7 @@ export function Header({ current }: { current: RouteKey }) {
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             aria-controls="mobile-menu"
-            className="grid h-11 w-11 place-items-center rounded-md text-white hover:bg-white/10 md:hidden"
+            className="grid h-11 w-11 place-items-center rounded-md text-secondary hover:bg-secondary/5 md:hidden"
           >
             {open ? <X /> : <Menu />}
           </button>
@@ -97,7 +86,7 @@ export function Header({ current }: { current: RouteKey }) {
       <div
         id="mobile-menu"
         hidden={!open}
-        className="fixed inset-x-0 top-[76px] bottom-0 overflow-y-auto bg-[#1C2759] md:hidden"
+        className="fixed inset-x-0 top-[76px] bottom-0 overflow-y-auto bg-white md:hidden"
       >
         <nav className="flex flex-col px-6 pt-6 pb-24" aria-label="Mobile">
           {[{ key: "home" as RouteKey, href: page("/"), label: "Home" }, ...NAV].map((n, i) => {
@@ -109,10 +98,10 @@ export function Header({ current }: { current: RouteKey }) {
                 aria-current={on ? "page" : undefined}
                 onClick={() => setOpen(false)}
                 data-testid={`link-mobile-${n.key}`}
-                className={`rise flex items-baseline gap-4 border-b border-white/10 py-5 font-display text-4xl font-bold uppercase ${on ? "text-[#F4C430]" : "text-white"}`}
+                className={`rise flex items-baseline gap-4 border-b border-secondary/10 py-5 font-display text-4xl font-bold uppercase ${on ? "text-primary" : "text-secondary"}`}
                 style={{ animationDelay: `${i * 50}ms` }}
               >
-                <span className="font-mono text-xs text-[#F4C430]">0{i + 1}</span>
+                <span className="font-mono text-xs text-primary">0{i + 1}</span>
                 {n.label}
               </a>
             );

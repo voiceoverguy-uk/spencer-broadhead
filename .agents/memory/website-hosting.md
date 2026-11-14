@@ -20,3 +20,15 @@ The user wants separate website pages rather than all content on one page.
 **Why:** The user explicitly requested a multi-page site.
 
 **How to apply:** Keep the main navigation as real page links and preserve page-specific content and SEO; do not revert to one long scrolling homepage.
+
+The user wants testimonial dates omitted and a randomly rotating selection on the home page.
+
+**Why:** The user explicitly requested these changes when bringing across the original testimonials.
+
+**How to apply:** Preserve the genuine customer wording and attribution without displaying dates or implying the old quotes are new reviews.
+
+The user dislikes chunky heading lettering and wants softer typography that remains businesslike.
+
+**Why:** The user explicitly rejected the heavy condensed “Meet the team” heading.
+
+**How to apply:** Keep headings professional and readable without restoring heavy condensed, all-capital display typography.

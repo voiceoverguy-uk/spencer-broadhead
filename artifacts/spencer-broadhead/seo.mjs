@@ -28,6 +28,11 @@ export const pages = [
     description: 'Meet David, Robert, Andy and Lewis at Spencer & Broadhead, our family-run garage on George Street, Wakefield. Familiar faces and personal service.',
   },
   {
+    path: '/testimonials', label: 'Testimonials',
+    title: 'Customer Testimonials | Spencer & Broadhead Wakefield',
+    description: 'Read genuine customer testimonials about Spencer & Broadhead, our family-run Wakefield garage, and the friendly, efficient service our customers value.',
+  },
+  {
     path: '/contact', label: 'Contact',
     title: 'Contact Our Wakefield Garage | Spencer & Broadhead',
     description: 'Call 01924 373675 or visit Spencer & Broadhead on George Street, Wakefield, WF1 1DR. Find directions, email and weekday opening hours. Weekends by appointment.',
