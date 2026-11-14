@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Spencer & Broadhead"
+description = "A clean, modern website for Spencer & Broadhead, the family-run Wakefield garage established in 1969, helping local motorists explore services and contact the team."
+version = "1.0.0"
+id = "artifacts/spencer-broadhead"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 19862
+
+[services.development]
+run = "pnpm --filter @workspace/spencer-broadhead run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/spencer-broadhead", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/spencer-broadhead/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "19862"
+BASE_PATH = "/"

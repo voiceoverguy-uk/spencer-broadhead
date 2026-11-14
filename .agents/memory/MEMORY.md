@@ -1,0 +1,1 @@
+- [Website hosting requirements](website-hosting.md) — the garage website is intended for GitHub source control and Vercel hosting.

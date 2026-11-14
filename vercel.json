@@ -1,0 +1,13 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "installCommand": "pnpm install --frozen-lockfile",
+  "buildCommand": "pnpm --filter @workspace/spencer-broadhead run build",
+  "outputDirectory": "artifacts/spencer-broadhead/dist/public",
+  "redirects": [
+    { "source": "/about", "destination": "/#services", "permanent": true },
+    { "source": "/contact-us", "destination": "/#visit", "permanent": true },
+    { "source": "/our-team", "destination": "/#story", "permanent": true },
+    { "source": "/testimonials", "destination": "/", "permanent": true }
+  ]
+}
