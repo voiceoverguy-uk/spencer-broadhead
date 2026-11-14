@@ -359,7 +359,7 @@ export function NextSteps({ items }: { items: { href: string; label: string; lin
       <Reveal>
         <Eyebrow>Where next</Eyebrow>
       </Reveal>
-      <ul className="mt-8 grid gap-px overflow-hidden rounded-lg border border-border bg-border md:grid-cols-2">
+      <ul className={`mt-8 grid gap-px overflow-hidden rounded-lg border border-border bg-border ${items.length === 3 ? "md:grid-cols-3" : "md:grid-cols-2"}`}>
         {items.map((it) => (
           <li key={it.id}>
             <a href={it.href} data-testid={`link-next-${it.id}`} className="group flex h-full items-start justify-between gap-6 bg-card p-8 transition-colors duration-300 hover:bg-secondary">

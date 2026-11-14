@@ -8,7 +8,6 @@
   "trailingSlash": false,
   "redirects": [
     { "source": "/contact-us", "destination": "/contact", "permanent": true },
-    { "source": "/our-team", "destination": "/about", "permanent": true },
     { "source": "/testimonials", "destination": "/", "permanent": true }
   ]
 }

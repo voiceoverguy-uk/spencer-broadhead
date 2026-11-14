@@ -60,11 +60,11 @@ export function Header({ current }: { current: RouteKey }) {
                 href={n.href}
                 aria-current={on ? "page" : undefined}
                 data-testid={`link-nav-${n.key}`}
-                className={`relative px-3 py-2 text-[15px] font-semibold transition-colors ${on ? "text-white" : "text-white/70 hover:text-white"}`}
+                className={`relative whitespace-nowrap px-2 py-2 text-[14px] font-semibold lg:px-3 lg:text-[15px] transition-colors ${on ? "text-white" : "text-white/70 hover:text-white"}`}
               >
                 {n.label}
                 <span
-                  className={`absolute inset-x-3 -bottom-0.5 h-[2px] origin-left bg-[#F4C430] transition-transform duration-300 ${on ? "scale-x-100" : "scale-x-0"}`}
+                  className={`absolute inset-x-2 lg:inset-x-3 -bottom-0.5 h-[2px] origin-left bg-[#F4C430] transition-transform duration-300 ${on ? "scale-x-100" : "scale-x-0"}`}
                 />
               </a>
             );
@@ -75,9 +75,9 @@ export function Header({ current }: { current: RouteKey }) {
           <a
             href={TEL}
             data-testid="button-header-call"
-            className="hidden items-center gap-2 rounded-md bg-accent px-4 py-2.5 text-sm font-bold text-white transition-transform hover:-translate-y-0.5 sm:inline-flex"
+            className="hidden items-center gap-2 rounded-md bg-accent px-4 py-2.5 text-sm font-bold text-white transition-transform md:px-3 lg:px-4 hover:-translate-y-0.5 sm:inline-flex"
           >
-            <Phone className="h-4 w-4" /> {PHONE}
+            <Phone className="h-4 w-4" aria-hidden /> <span className="md:sr-only lg:not-sr-only">{PHONE}</span>
           </a>
           <button
             ref={btnRef}

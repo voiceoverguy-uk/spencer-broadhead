@@ -117,6 +117,7 @@ export function AboutPage() {
       <Exterior />
       <NextSteps
         items={[
+          { id: "team", href: page("/our-team"), label: "Meet the team", line: "David, Rob, Andy and Lewis, the people looking after your car." },
           { id: "services", href: page("/services"), label: "What we do", line: "Servicing, MOTs, diagnostics and mechanical repairs." },
           { id: "contact", href: page("/contact"), label: "Visit us", line: "Phone, email, hours and directions." },
         ]}

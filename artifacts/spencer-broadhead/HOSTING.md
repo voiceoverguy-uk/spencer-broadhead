@@ -15,7 +15,7 @@ No GitHub repository or Vercel project is connected automatically by this code.
 
 ## Search-engine setup
 
-The production build pre-renders five real React pages: Home (`/`), Services (`/services`), Bodywork (`/bodywork`), About (`/about`) and Contact (`/contact`). Each has its own static HTML document, unique metadata and canonical URL, so visitors and crawlers receive the text and links without running JavaScript. React then hydrates that same content.
+The production build pre-renders six real React pages: Home (`/`), Services (`/services`), Bodywork (`/bodywork`), About (`/about`), Our team (`/our-team`) and Contact (`/contact`). Each has its own static HTML document, unique metadata and canonical URL, so visitors and crawlers receive the text and links without running JavaScript. React then hydrates that same content. The team page preserves its existing URL rather than redirecting to About.
 
 Navigation uses normal document links. Vercel's `cleanUrls` setting serves the generated HTML at the extensionless addresses; no catch-all homepage rewrite is used. A generated `404.html` handles unknown pages without indexing them.
 

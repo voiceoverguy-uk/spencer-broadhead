@@ -12,7 +12,7 @@ export const MAP_EMBED =
 
 const BASE = (import.meta.env.BASE_URL || "/").replace(/\/+$/, "");
 
-export type RouteKey = "home" | "services" | "bodywork" | "about" | "contact" | "notfound";
+export type RouteKey = "home" | "services" | "bodywork" | "about" | "team" | "contact" | "notfound";
 
 /** BASE_URL-aware path for a site page, e.g. page("/services") or page("/contact", "#hours"). */
 export const page = (path: string, hash = "") => `${BASE}${path === "/" ? "/" : path}${hash}`;
@@ -22,6 +22,7 @@ export const ROUTES: Record<string, RouteKey> = {
   "/services": "services",
   "/bodywork": "bodywork",
   "/about": "about",
+  "/our-team": "team",
   "/contact": "contact",
 };
 
@@ -36,6 +37,7 @@ export const NAV: { key: RouteKey; href: string; label: string }[] = [
   { key: "services", href: page("/services"), label: "Services" },
   { key: "bodywork", href: page("/bodywork"), label: "Bodywork" },
   { key: "about", href: page("/about"), label: "About us" },
+  { key: "team", href: page("/our-team"), label: "Our team" },
   { key: "contact", href: page("/contact"), label: "Contact" },
 ];
 
