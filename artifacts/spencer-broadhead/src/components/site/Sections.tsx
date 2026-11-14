@@ -1,12 +1,13 @@
+import type { ReactNode } from "react";
 import { ArrowRight, ArrowUpRight, Car, Clock, Mail, MapPin, Phone, ShieldCheck, Wrench, MessageSquare, ClipboardCheck, KeyRound } from "lucide-react";
 import { Btn, Eyebrow, Reveal } from "./ui";
-import { DIRECTIONS, EMAIL, MAILTO, MAP_EMBED, PHONE, SERVICES, TEL, img } from "./data";
+import { DIRECTIONS, EMAIL, MAILTO, MAP_EMBED, NAV, PHONE, SERVICES, TEL, img, page } from "./data";
 
 const years = new Date().getFullYear() - 1969;
 
 export function Hero() {
   return (
-    <section id="top" className="relative overflow-hidden bg-[#1C2759] text-white">
+    <section className="relative overflow-hidden bg-[#1C2759] text-white">
       <div className="absolute inset-0">
         <img src={img("garage-inside.jpg")} alt="" width="1600" height="650" fetchPriority="high" className="kenburns h-full w-full object-cover opacity-35" />
         <div className="absolute inset-0 bg-[linear-gradient(100deg,#1C2759_25%,rgba(28,39,89,.75)_60%,rgba(28,39,89,.35))]" />
@@ -25,7 +26,7 @@ export function Hero() {
           </p>
           <div className="rise mt-9 flex flex-wrap gap-3" style={{ animationDelay: "360ms" }}>
             <Btn href={TEL} testId="button-hero-call"><Phone className="h-4 w-4" /> Call {PHONE}</Btn>
-            <Btn href="#services" variant="light" testId="button-hero-services">See what we do <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></Btn>
+            <Btn href={page("/services")} variant="light" testId="button-hero-services">See what we do <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></Btn>
           </div>
         </div>
         <div className="rise lg:col-span-4 lg:justify-self-end" style={{ animationDelay: "480ms" }}>
@@ -63,14 +64,14 @@ export function Marquee() {
   );
 }
 
-export function Services() {
+export function Services({ title = "Everything your car needs, under one roof." }: { title?: string } = {}) {
   return (
     <section id="services" className="mx-auto max-w-7xl px-5 py-24 md:px-8 md:py-32">
       <div className="grid gap-10 lg:grid-cols-12">
         <Reveal className="lg:col-span-4">
           <div className="lg:sticky lg:top-28">
             <Eyebrow>The work we do</Eyebrow>
-            <h2 className="mt-5 font-display text-5xl font-extrabold uppercase leading-[0.92] text-secondary md:text-6xl">Everything your car needs, under one roof.</h2>
+            <h2 className="mt-5 font-display text-5xl font-extrabold uppercase leading-[0.92] text-secondary md:text-6xl">{title}</h2>
             <p className="mt-5 max-w-sm text-lg text-muted-foreground">
               From a routine service to a fault nobody else could pin down. If you're not sure what's wrong, ring us and describe it. That's what we're here for.
             </p>
@@ -308,6 +309,14 @@ export function Footer() {
           <a href="#top" data-testid="link-footer-top" className="hover:text-white">Back to top</a>
         </div>
       </div>
+      <nav aria-label="Footer" className="mx-auto max-w-7xl px-5 pb-6 md:px-8">
+        <ul className="flex flex-wrap gap-x-6 gap-y-2 border-t border-white/10 pt-6 text-sm font-semibold">
+          <li><a href={page("/")} data-testid="link-footer-home" className="hover:text-white">Home</a></li>
+          {NAV.map((n) => (
+            <li key={n.key}><a href={n.href} data-testid={`link-footer-${n.key}`} className="hover:text-white">{n.label}</a></li>
+          ))}
+        </ul>
+      </nav>
       <div className="mx-auto max-w-7xl px-5 pb-8 text-xs text-white/40 md:px-8">
         &copy; {new Date().getFullYear()} Spencer &amp; Broadhead Ltd. George Street, Wakefield, WF1 1DR.
       </div>
@@ -321,5 +330,48 @@ export function MobileCallBar() {
       <a href={TEL} data-testid="button-sticky-call" className="flex items-center justify-center gap-2 bg-accent py-3.5 font-bold text-white"><Phone className="h-4 w-4" /> Call</a>
       <a href={DIRECTIONS} target="_blank" rel="noopener noreferrer" data-testid="button-sticky-directions" className="flex items-center justify-center gap-2 py-3.5 font-bold text-white"><MapPin className="h-4 w-4" /> Directions</a>
     </div>
+  );
+}
+
+export function PageIntro({ eyebrow, title, lead, image, imageAlt, children }: { eyebrow: string; title: string; lead: string; image?: string; imageAlt?: string; children?: ReactNode }) {
+  return (
+    <section className="relative overflow-hidden bg-[#1C2759] text-white">
+      {image && (
+        <div className="absolute inset-0">
+          <img src={img(image)} alt={imageAlt ?? ""} width="1600" height="650" fetchPriority="high" className="kenburns h-full w-full object-cover opacity-25" />
+          <div className="absolute inset-0 bg-[linear-gradient(100deg,#1C2759_35%,rgba(28,39,89,.7))]" />
+        </div>
+      )}
+      <div className="relative mx-auto max-w-7xl px-5 pb-16 pt-[140px] md:px-8 md:pb-20 md:pt-[168px]">
+        <div className="rise"><Eyebrow light>{eyebrow}</Eyebrow></div>
+        <h1 className="rise mt-6 max-w-4xl font-display text-[clamp(2.8rem,7vw,5.75rem)] font-extrabold uppercase leading-[0.9]" style={{ animationDelay: "100ms" }}>{title}</h1>
+        <p className="rise mt-6 max-w-2xl text-lg text-white/80 md:text-xl" style={{ animationDelay: "200ms" }}>{lead}</p>
+        {children && <div className="rise mt-8 flex flex-wrap gap-3" style={{ animationDelay: "300ms" }}>{children}</div>}
+      </div>
+      <div className="stripe-rule h-2 w-full" />
+    </section>
+  );
+}
+
+export function NextSteps({ items }: { items: { href: string; label: string; line: string; id: string }[] }) {
+  return (
+    <section className="mx-auto max-w-7xl px-5 py-20 md:px-8">
+      <Reveal>
+        <Eyebrow>Where next</Eyebrow>
+      </Reveal>
+      <ul className="mt-8 grid gap-px overflow-hidden rounded-lg border border-border bg-border md:grid-cols-2">
+        {items.map((it) => (
+          <li key={it.id}>
+            <a href={it.href} data-testid={`link-next-${it.id}`} className="group flex h-full items-start justify-between gap-6 bg-card p-8 transition-colors duration-300 hover:bg-secondary">
+              <span>
+                <span className="block font-display text-3xl font-bold uppercase text-secondary transition-colors group-hover:text-white">{it.label}</span>
+                <span className="mt-2 block text-muted-foreground transition-colors group-hover:text-white/75">{it.line}</span>
+              </span>
+              <ArrowRight className="mt-2 h-5 w-5 shrink-0 text-accent transition-transform duration-300 group-hover:translate-x-1 group-hover:text-[#F4C430]" />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }

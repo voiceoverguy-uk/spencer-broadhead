@@ -5,7 +5,7 @@ import { defineConfig } from 'vite';
 
 import runtimeErrorOverlay from '@replit/vite-plugin-runtime-error-modal';
 // @ts-ignore Plain JS shares SEO configuration with the static HTML generator.
-import { canonicalUrl, description, garageSchema, socialImage, title } from './seo.mjs';
+import { withPageSeo } from './seo.mjs';
 
 // Static production builds (including Vercel) do not need a listening port.
 const isBuild = process.argv.includes('build');
@@ -28,22 +28,11 @@ export default defineConfig({
   plugins: [
     {
       name: 'garage-seo',
-      transformIndexHtml() {
-        return [
-          { tag: 'title', children: title, injectTo: 'head' },
-          { tag: 'meta', attrs: { name: 'description', content: description }, injectTo: 'head' },
-          { tag: 'link', attrs: { rel: 'canonical', href: canonicalUrl }, injectTo: 'head' },
-          ...[
-            ['og:title', title], ['og:description', description],
-            ['og:url', canonicalUrl], ['og:image', socialImage],
-            ['og:image:alt', 'Spencer & Broadhead garage on George Street, Wakefield'],
-            ['og:site_name', 'Spencer & Broadhead'],
-          ].map(([property, content]) => ({ tag: 'meta', attrs: { property, content }, injectTo: 'head' as const })),
-          ...[
-            ['twitter:title', title], ['twitter:description', description], ['twitter:image', socialImage],
-          ].map(([name, content]) => ({ tag: 'meta', attrs: { name, content }, injectTo: 'head' as const })),
-          { tag: 'script', attrs: { type: 'application/ld+json' }, children: JSON.stringify(garageSchema).replace(/</g, '\\u003c'), injectTo: 'head' },
-        ];
+      transformIndexHtml(html, context) {
+        let pathname = (context.originalUrl ?? '/').split('?')[0];
+        const prefix = basePath.replace(/\/$/, '');
+        if (prefix && pathname.startsWith(`${prefix}/`)) pathname = pathname.slice(prefix.length);
+        return withPageSeo(html, pathname);
       },
     },
     react(),

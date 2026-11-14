@@ -5,6 +5,82 @@ export const title = 'Garage & MOT Testing Wakefield | Spencer & Broadhead';
 export const description = 'Family-run garage in Wakefield since 1969. MOT testing, car servicing, diagnostics and repairs on George Street. Call Spencer & Broadhead on 01924 373675.';
 export const socialImage = `${siteUrl}/images/garage-outside.jpg`;
 
+export const pages = [
+  { path: '/', label: 'Home', title, description },
+  {
+    path: '/services', label: 'Services',
+    title: 'Car Servicing & MOTs Wakefield | Spencer & Broadhead',
+    description: 'Explore MOT testing, car servicing, diagnostics, brakes, tyres, clutches, air conditioning and exhaust repairs at our family-run garage in central Wakefield.',
+  },
+  {
+    path: '/bodywork', label: 'Bodywork',
+    title: 'Car Bodywork Repairs Wakefield | Spencer & Broadhead',
+    description: 'On-site accident and bodywork repairs on George Street, Wakefield. From minor bumps and scratches to insurance repairs, contact our friendly garage team.',
+  },
+  {
+    path: '/about', label: 'About',
+    title: 'About Our Wakefield Garage | Spencer & Broadhead',
+    description: 'Meet the story behind Spencer & Broadhead, the family-run independent garage founded in Wakefield in 1969. Honest advice and experienced vehicle technicians.',
+  },
+  {
+    path: '/contact', label: 'Contact',
+    title: 'Contact Our Wakefield Garage | Spencer & Broadhead',
+    description: 'Call 01924 373675 or visit Spencer & Broadhead on George Street, Wakefield, WF1 1DR. Find directions, email and weekday opening hours. Weekends by appointment.',
+  },
+];
+
+export const notFoundPage = {
+  path: '/404', label: 'Page not found',
+  title: 'Page Not Found | Spencer & Broadhead Wakefield',
+  description: 'This page could not be found. Visit our Wakefield garage website to explore services, learn about our family-run team or contact Spencer & Broadhead.',
+};
+
+export const getPage = pathname => {
+  const normalized = pathname.split(/[?#]/)[0].replace(/\/+$/, '') || '/';
+  return pages.find(page => page.path === normalized) ?? notFoundPage;
+};
+
+const escapeHtml = value => String(value).replace(/[&<>"']/g, char => ({
+  '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+})[char]);
+
+export function withPageSeo(html, pathname) {
+  const page = getPage(pathname);
+  const url = `${siteUrl}${page.path}`;
+  const isNotFound = page === notFoundPage;
+  const meta = (attribute, key, value) =>
+    `<meta ${attribute}="${key}" content="${escapeHtml(value)}" />`;
+  const jsonLd = data => `<script type="application/ld+json">${JSON.stringify(data).replace(/</g, '\\u003c')}</script>`;
+  const tags = [
+    `<title>${escapeHtml(page.title)}</title>`,
+    meta('name', 'description', page.description),
+    isNotFound ? meta('name', 'robots', 'noindex, follow') : `<link rel="canonical" href="${url}" />`,
+    meta('property', 'og:title', page.title),
+    meta('property', 'og:description', page.description),
+    meta('property', 'og:url', url),
+    meta('property', 'og:image', socialImage),
+    meta('property', 'og:image:alt', 'Spencer & Broadhead garage on George Street, Wakefield'),
+    meta('property', 'og:site_name', 'Spencer & Broadhead'),
+    meta('name', 'twitter:title', page.title),
+    meta('name', 'twitter:description', page.description),
+    meta('name', 'twitter:image', socialImage),
+    jsonLd(garageSchema),
+  ];
+  if (page.path !== '/' && !isNotFound) {
+    tags.push(jsonLd({
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: canonicalUrl },
+        { '@type': 'ListItem', position: 2, name: page.label, item: url },
+      ],
+    }));
+  }
+  const marker = /<!-- seo:start -->[\s\S]*?<!-- seo:end -->/;
+  if (!marker.test(html)) throw new Error('Missing SEO markers in the HTML template.');
+  return html.replace(marker, () => `<!-- seo:start -->\n${tags.join('\n')}\n<!-- seo:end -->`);
+}
+
 export const garageSchema = {
   '@context': 'https://schema.org',
   '@type': 'AutoRepair',

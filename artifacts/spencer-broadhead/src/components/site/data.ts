@@ -10,12 +10,33 @@ export const DIRECTIONS =
 export const MAP_EMBED =
   "https://www.google.com/maps?q=" + encodeURIComponent("George Street, Wakefield WF1 1DR") + "&output=embed";
 
-export const NAV = [
-  { href: "#services", label: "Services" },
-  { href: "#bodywork", label: "Bodywork" },
-  { href: "#story", label: "Our story" },
-  { href: "#how", label: "How it works" },
-  { href: "#visit", label: "Visit" },
+const BASE = (import.meta.env.BASE_URL || "/").replace(/\/+$/, "");
+
+export type RouteKey = "home" | "services" | "bodywork" | "about" | "contact" | "notfound";
+
+/** BASE_URL-aware path for a site page, e.g. page("/services") or page("/contact", "#hours"). */
+export const page = (path: string, hash = "") => `${BASE}${path === "/" ? "/" : path}${hash}`;
+
+export const ROUTES: Record<string, RouteKey> = {
+  "/": "home",
+  "/services": "services",
+  "/bodywork": "bodywork",
+  "/about": "about",
+  "/contact": "contact",
+};
+
+export function resolveRoute(pathname: string): RouteKey {
+  let p = (pathname || "/").split(/[?#]/)[0];
+  if (BASE && (p === BASE || p.startsWith(BASE + "/"))) p = p.slice(BASE.length);
+  p = p.replace(/\/index\.html$/, "").replace(/\/+$/, "") || "/";
+  return ROUTES[p] ?? "notfound";
+}
+
+export const NAV: { key: RouteKey; href: string; label: string }[] = [
+  { key: "services", href: page("/services"), label: "Services" },
+  { key: "bodywork", href: page("/bodywork"), label: "Bodywork" },
+  { key: "about", href: page("/about"), label: "About us" },
+  { key: "contact", href: page("/contact"), label: "Contact" },
 ];
 
 export const SERVICES = [
