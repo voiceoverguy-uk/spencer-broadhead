@@ -9,7 +9,7 @@ export function Hero() {
   return (
     <section className="relative overflow-hidden bg-[#1C2759] text-white">
       <div className="absolute inset-0">
-        <img src={img("garage-inside.jpg")} alt="" width="1600" height="650" fetchPriority="high" className="kenburns h-full w-full object-cover" />
+        <img src={img("workshop-hero.webp")} alt="" width="1600" height="650" fetchPriority="high" className="kenburns h-full w-full object-cover" />
         <div className="hero-shade absolute inset-0" />
       </div>
       <div className="relative mx-auto flex min-h-[620px] max-w-7xl items-center px-5 pb-16 pt-36 md:min-h-[680px] md:px-8">
@@ -49,7 +49,7 @@ export function Marquee() {
 
 export function Services({ title = "Everything your car needs, under one roof." }: { title?: string } = {}) {
   return (
-    <section id="services" className="mx-auto max-w-7xl px-5 py-24 md:px-8 md:py-32">
+    <section id="services" className="mx-auto max-w-7xl px-5 py-12 md:px-8 md:py-16">
       <div className="grid gap-10 lg:grid-cols-12">
         <Reveal className="lg:col-span-4">
           <div className="lg:sticky lg:top-28">
@@ -58,23 +58,34 @@ export function Services({ title = "Everything your car needs, under one roof." 
             <p className="mt-5 max-w-sm text-lg text-muted-foreground">
               From a routine service to a fault nobody else could pin down. If you're not sure what's wrong, ring us and describe it. That's what we're here for.
             </p>
-            <div className="mt-8"><Btn href={TEL} variant="ghost" testId="button-services-call"><Phone className="h-4 w-4" /> Talk to a technician</Btn></div>
           </div>
         </Reveal>
-        <ol className="grid gap-px overflow-hidden rounded-lg border border-border bg-border sm:grid-cols-2 lg:col-span-8">
-          {SERVICES.map((s, i) => (
-            <li key={s.code} data-testid={`card-service-${s.code}`} className="group relative bg-card p-7 transition-colors duration-300 hover:bg-secondary">
-              <Reveal delay={(i % 2) * 80}>
-                <div className="flex items-start justify-between">
-                  <span className="font-mono text-xs text-accent transition-colors group-hover:text-[#F4C430]">{s.code}</span>
-                  <ArrowUpRight className="h-5 w-5 text-border transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white" />
-                </div>
-                <h3 className="mt-8 font-display text-3xl font-bold uppercase text-secondary transition-colors group-hover:text-white">{s.name}</h3>
-                <p className="mt-2 text-muted-foreground transition-colors group-hover:text-white/75">{s.line}</p>
-              </Reveal>
+        <ul className="grid content-start gap-x-8 sm:grid-cols-2 lg:col-span-8">
+          {SERVICES.map((s) => (
+            <li key={s.code} data-testid={`card-service-${s.code}`} className="border-t border-border py-4">
+                <h3 className="text-xl font-semibold text-secondary">{s.name}</h3>
+                <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{s.line}</p>
             </li>
           ))}
-        </ol>
+        </ul>
+      </div>
+      <div className="mt-12">
+        <h2 className="text-2xl font-semibold text-secondary">Inside our workshop</h2>
+        <ul className="mt-5 grid grid-cols-2 gap-4 lg:grid-cols-4">
+          {[
+            { file: "spencer-broadhead-workshop-MOT-bay.webp", label: "Our MOT bay", alt: "Car positioned over the inspection pit in our MOT testing bay" },
+            { file: "spencer-broadhead-workshop-2.webp", label: "Servicing and repairs", alt: "Technician working alongside cars raised on workshop ramps" },
+            { file: "spencer-broadhead-workshop-3.webp", label: "Engine work", alt: "Technician working on an engine beneath a raised car" },
+            { file: "spencer-broadhead-workshop-.webp", label: "Mechanical repairs", alt: "Engine and transmission removed from a car in our workshop" },
+          ].map((photo) => (
+            <li key={photo.file}>
+              <a href={img(photo.file)} target="_blank" rel="noopener noreferrer" className="group block" aria-label={`View full photo: ${photo.label} (opens in a new tab)`}>
+                <img src={img(photo.file.replace(".webp", "-thumb.webp"))} alt={photo.alt} width="600" height="450" loading="lazy" decoding="async" className="aspect-[4/3] w-full rounded-md object-cover" />
+                <span className="mt-2 block text-sm text-secondary underline-offset-4 group-hover:underline">{photo.label} <span aria-hidden>↗</span></span>
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );
@@ -120,12 +131,11 @@ export function Story() {
   return (
     <section id="story" className="mx-auto max-w-7xl px-5 py-24 md:px-8 md:py-32">
       <div className="grid gap-14 lg:grid-cols-12">
-        <Reveal className="lg:col-span-5">
-          <Eyebrow>Since 1969</Eyebrow>
-          <div className="mt-6 font-display text-[clamp(6rem,16vw,12rem)] font-extrabold leading-[0.8] text-secondary">1969</div>
-          <div className="mt-4 h-1 w-24 bg-accent" />
-        </Reveal>
-        <Reveal className="lg:col-span-7" delay={120}>
+        <figure className="lg:col-span-4">
+          <img src={img("ray-spencer.webp")} alt="Ray Spencer, co-founder of Spencer & Broadhead" width="1069" height="1471" loading="lazy" decoding="async" className="mx-auto w-full max-w-sm rounded-lg" />
+          <figcaption className="mt-3 text-sm text-muted-foreground">Ray Spencer, co-founder</figcaption>
+        </figure>
+        <div className="lg:col-span-8">
           <h2 className="font-display text-4xl font-bold uppercase leading-tight text-secondary md:text-5xl">
             Two names over the door. Still a family business.
           </h2>
@@ -137,7 +147,17 @@ export function Story() {
               Plenty has changed under the bonnet since then. What hasn't is the way we work: look at the car properly, explain what we've found in plain English, and only do the work you've agreed to.
             </p>
           </div>
-        </Reveal>
+          <div className="mt-8 grid items-start gap-6 border-t border-border pt-8 sm:grid-cols-[minmax(0,1fr)_220px]">
+            <div>
+              <h3 className="text-2xl font-semibold text-secondary">Celebrating 50 years</h3>
+              <p className="mt-3 leading-relaxed text-muted-foreground">In 2019, the Wakefield Express marked our golden jubilee with a feature on Ray and the garage’s first 50 years on George Street.</p>
+              <a href={img("spencer-broadhead-50-years-newspaper-article.webp")} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-2 font-semibold text-primary underline underline-offset-4">Read the newspaper cutting <ArrowUpRight className="h-4 w-4" /><span className="sr-only"> (opens in a new tab)</span></a>
+            </div>
+            <a href={img("spencer-broadhead-50-years-newspaper-article.webp")} target="_blank" rel="noopener noreferrer" aria-label="View the full 50th anniversary newspaper article (opens in a new tab)" className="block">
+              <img src={img("spencer-broadhead-50-years-newspaper-article.webp")} alt="Newspaper cutting headlined City garage still going strong after 50 years, featuring Ray Spencer outside the garage" width="928" height="1694" loading="lazy" decoding="async" className="mx-auto w-full max-w-[280px] rounded-sm border border-border" />
+            </a>
+          </div>
+        </div>
       </div>
     </section>
   );
@@ -152,12 +172,12 @@ export function How() {
   ];
   return (
     <section id="how" className="border-y border-border bg-muted/60">
-      <div className="mx-auto max-w-7xl px-5 py-24 md:px-8">
+      <div className="mx-auto max-w-7xl px-5 py-12 md:px-8 md:py-16">
         <Reveal>
           <Eyebrow>How it works</Eyebrow>
           <h2 className="mt-5 max-w-2xl font-display text-5xl font-extrabold uppercase leading-[0.92] text-secondary md:text-6xl">No jargon. No surprises.</h2>
         </Reveal>
-        <div className="mt-14 grid gap-8 md:grid-cols-4">
+        <div className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {steps.map((s, i) => (
             <Reveal key={s.t} delay={i * 100}>
               <div className="group relative border-t-2 border-secondary pt-6" data-testid={`step-${i + 1}`}>

@@ -46,7 +46,7 @@ export function ServicesPage() {
         eyebrow="Servicing, MOTs and mechanical repairs"
         title="Car servicing, MOTs & repairs in Wakefield"
         lead="Routine servicing, MOT testing and mechanical repairs, carried out by experienced technicians on George Street. We'll tell you what your car actually needs, and what it doesn't."
-        image="garage-inside.jpg"
+        image="workshop-hero.webp"
       >
         <Btn href={TEL} testId="button-intro-call"><Phone className="h-4 w-4" /> Call {PHONE}</Btn>
         <Btn href={page("/contact")} variant="light" testId="button-intro-contact">Hours &amp; directions</Btn>
@@ -95,7 +95,6 @@ export function AboutPage() {
         image="garage-outside.jpg"
       />
       <Story />
-      <How />
       <NextSteps
         items={[
           { id: "team", href: page("/our-team"), label: "Meet the team", line: "David, Rob, Andy and Lewis, the people looking after your car." },
@@ -117,6 +116,7 @@ export function ContactPage() {
         image="garage-outside.jpg"
       />
       <Visit />
+      <How />
     </>
   );
 }

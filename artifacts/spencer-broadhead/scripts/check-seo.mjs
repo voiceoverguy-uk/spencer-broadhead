@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readFile, stat } from 'node:fs/promises';
 import { canonicalUrl, siteUrl, socialImage, pages } from '../seo.mjs';
 
 const output = new URL('../dist/public/', import.meta.url);
@@ -46,6 +46,11 @@ for (const [pathname, html] of documents) {
     if (/^(https?:|mailto:|tel:)/.test(href)) continue;
     const target = new URL(href.replace(/&amp;/g, '&'), `${siteUrl}${pathname}`);
     const route = target.pathname.replace(/\/+$/, '') || '/';
+    if (route.startsWith('/images/')) {
+      const asset = await stat(new URL(`.${route}`, output));
+      assert.ok(asset.isFile() && asset.size > 0, `${pathname} links to a real image: ${href}`);
+      continue;
+    }
     const destination = documents.get(route);
     assert.ok(destination, `${pathname} links to a generated page: ${href}`);
     if (target.hash) {
