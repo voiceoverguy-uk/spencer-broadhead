@@ -9,8 +9,8 @@ export function Hero() {
   return (
     <section className="relative overflow-hidden bg-[#1C2759] text-white">
       <div className="absolute inset-0">
-        <img src={img("garage-inside.jpg")} alt="" width="1600" height="650" fetchPriority="high" className="kenburns h-full w-full object-cover opacity-35" />
-        <div className="absolute inset-0 bg-[linear-gradient(100deg,#1C2759_25%,rgba(28,39,89,.75)_60%,rgba(28,39,89,.35))]" />
+        <img src={img("garage-inside.jpg")} alt="" width="1600" height="650" fetchPriority="high" className="kenburns h-full w-full object-cover" />
+        <div className="hero-shade absolute inset-0" />
       </div>
       <div className="relative mx-auto grid min-h-[100dvh] max-w-7xl items-end gap-10 px-5 pb-16 pt-32 md:px-8 lg:grid-cols-12 lg:pb-24">
         <div className="lg:col-span-8">
@@ -30,7 +30,7 @@ export function Hero() {
           </div>
         </div>
         <div className="rise lg:col-span-4 lg:justify-self-end" style={{ animationDelay: "480ms" }}>
-          <div className="w-full max-w-sm rounded-lg border border-white/15 bg-white/[0.06] p-6 backdrop-blur-md">
+          <div className="w-full max-w-sm rounded-lg border border-white/15 bg-[#1C2759]/85 p-6 backdrop-blur-md">
             <div className="flex items-baseline justify-between">
               <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/60">On George Street for</span>
             </div>
@@ -338,8 +338,8 @@ export function PageIntro({ eyebrow, title, lead, image, imageAlt, children }: {
     <section className="relative overflow-hidden bg-[#1C2759] text-white">
       {image && (
         <div className="absolute inset-0">
-          <img src={img(image)} alt={imageAlt ?? ""} width="1600" height="650" fetchPriority="high" className="kenburns h-full w-full object-cover opacity-25" />
-          <div className="absolute inset-0 bg-[linear-gradient(100deg,#1C2759_35%,rgba(28,39,89,.7))]" />
+          <img src={img(image)} alt={imageAlt ?? ""} width="1600" height="650" fetchPriority="high" className="kenburns h-full w-full object-cover" />
+          <div className="hero-shade absolute inset-0" />
         </div>
       )}
       <div className="relative mx-auto max-w-7xl px-5 pb-16 pt-[140px] md:px-8 md:pb-20 md:pt-[168px]">
