@@ -271,10 +271,15 @@ blockquote.font-display { font-size: clamp(1.6rem, 2.7vw, 2.35rem); line-height:
 .kenburns { animation: kenburns 2.4s cubic-bezier(.2,.7,.2,1) both; }
 @keyframes rise { from { opacity:0; transform: translateY(30px);} to {opacity:1; transform:none;} }
 .rise { animation: rise .9s cubic-bezier(.2,.7,.2,1) both; }
+@keyframes review-card-shuffle-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.review-card-shuffle-in { animation: review-card-shuffle-in .38s cubic-bezier(.2,.7,.2,1) both; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .reveal, .reveal.will-reveal:not(.in) { opacity:1; transform:none; transition:none; }
-  .marquee, .kenburns, .rise { animation: none; }
+  .marquee, .kenburns, .rise, .review-card-shuffle-in { animation: none; }
   * { transition-duration: 0ms !important; }
 }
 @keyframes sb-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }

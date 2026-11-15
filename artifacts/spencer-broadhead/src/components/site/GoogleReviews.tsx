@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ArrowRight, ExternalLink } from "lucide-react";
+import { ArrowRight, ExternalLink, Shuffle } from "lucide-react";
 import { page } from "./data";
 import { GOOGLE_REVIEWS_URL, loadBusinessReviews, type GoogleReview } from "@/lib/google-reviews";
 import { formatRecentReviewDate } from "@/lib/review-date";
@@ -286,6 +286,21 @@ export function HomeGoogleReviews() {
 
 export function GoogleReviewsWall() {
   const { data, status } = useGoogleReviews();
+  const reviewCount = data?.reviews.length ?? 0;
+  const [reviewOrder, setReviewOrder] = useState<number[]>([]);
+  const [shuffleVersion, setShuffleVersion] = useState(0);
+
+  useEffect(() => {
+    setReviewOrder(shuffledReviewOrder(reviewCount));
+  }, [reviewCount]);
+
+  const shuffleReviews = () => {
+    setReviewOrder(shuffledReviewOrder(reviewCount, reviewOrder[0] ?? -1));
+    setShuffleVersion((version) => version + 1);
+  };
+  const orderedReviews = reviewOrder
+    .map((index) => data?.reviews[index])
+    .filter((review): review is GoogleReview => Boolean(review));
 
   return (
     <section className="mx-auto max-w-7xl px-5 py-16 md:px-8 md:py-20" aria-label="Google reviews">
@@ -314,17 +329,66 @@ export function GoogleReviewsWall() {
         <p className="py-8 text-muted-foreground">No written Google reviews are available to show.</p>
       )}
       {data && data.reviews.length > 0 && (
-        <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {data.reviews.map((review, index) => (
-            <li key={`${review.authorAttribution?.displayName ?? "review"}-${index}`} className="rounded-lg border border-secondary/15 bg-white p-6 shadow-sm">
+        <>
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+            <p className="text-sm text-muted-foreground">
+              Shuffle these reviews, or use the final card to read all reviews on Google.
+            </p>
+            {data.reviews.length > 1 && (
+              <button
+                type="button"
+                onClick={shuffleReviews}
+                aria-label="Show the same reviews in a different order"
+                className="inline-flex items-center gap-2 rounded-md border border-secondary/20 bg-white px-3 py-2 text-sm font-semibold text-secondary transition-colors hover:bg-secondary/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary"
+              >
+                <Shuffle className="h-4 w-4" aria-hidden="true" />
+                Shuffle reviews
+              </button>
+            )}
+          </div>
+          <p className="sr-only" role="status" aria-live="polite">
+            Showing {reviewCount} Google reviews in a different order.
+          </p>
+          <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {orderedReviews.map((review, index) => (
+            <li
+              key={`${review.authorAttribution?.uri ?? review.authorAttribution?.displayName ?? "review"}-${review.text ?? review.originalText ?? index}-${shuffleVersion}`}
+              style={{ animationDelay: `${index * 60}ms` }}
+              className={`rounded-lg border border-secondary/15 bg-white p-6 shadow-sm ${shuffleVersion > 0 ? "review-card-shuffle-in" : ""}`}
+            >
               <ReviewQuote review={review} dark />
             </li>
           ))}
-        </ul>
+          <li
+            className="min-h-64 rounded-lg border border-secondary/15 bg-white shadow-sm"
+          >
+            <a
+              href={data.mapsUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="group flex h-full flex-col justify-between rounded-lg p-6 transition-colors hover:bg-secondary/[0.03] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary"
+            >
+              <div>
+                <div className="flex items-center gap-2">
+                  <GoogleBrand />
+                  <span className="text-sm text-muted-foreground">reviews</span>
+                </div>
+                <h3 className="mt-5 text-lg font-semibold text-secondary">
+                  Want to read more?
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  See all {data.userRatingCount ? `${data.userRatingCount} ` : ""}customer reviews for Spencer &amp; Broadhead on Google.
+                </p>
+                {data && <div className="mt-3"><ReviewSummary data={data} /></div>}
+              </div>
+              <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-secondary underline underline-offset-4 group-hover:text-primary">
+                Read all reviews <ExternalLink className="h-4 w-4" aria-hidden="true" />
+              </span>
+            </a>
+          </li>
+          </ul>
+        </>
       )}
-      <p className="mt-5 text-xs text-muted-foreground">
-        Google may return a limited selection of reviews, ordered by relevance.
-      </p>
       <ProviderAttributions data={data} />
     </section>
   );
