@@ -113,7 +113,7 @@ export function ContactPage() {
         eyebrow="Visit or get in touch"
         title="Contact Spencer & Broadhead"
         lead="We don't take bookings online. Call or email and a real person will find a time that works for you."
-        image="garage-outside.jpg"
+        image="garage-outside-sharp.webp"
       />
       <Visit />
       <How />

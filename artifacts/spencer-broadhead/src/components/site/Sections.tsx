@@ -263,7 +263,7 @@ export function Visit() {
           <Reveal className="lg:col-span-5" delay={120}>
             <figure className="overflow-hidden rounded-lg border border-white/10 bg-white/[0.04]">
               <img
-                src={img("garage-outside.jpg")}
+                src={img("garage-outside-sharp.webp")}
                 alt="Blue Spencer & Broadhead and MOT signs on the brick garage building on George Street, Wakefield"
                 width="1600"
                 height="650"
