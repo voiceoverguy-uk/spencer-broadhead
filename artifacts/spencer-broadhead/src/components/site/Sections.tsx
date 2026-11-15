@@ -1,9 +1,15 @@
 import type { ReactNode } from "react";
 import { ArrowRight, ArrowUpRight, Car, Clock, Mail, MapPin, Phone, ShieldCheck, Wrench, MessageSquare, ClipboardCheck, KeyRound } from "lucide-react";
 import { Btn, Eyebrow, Reveal } from "./ui";
+import { ImagePopup } from "./ImagePopup";
 import { DIRECTIONS, EMAIL, MAILTO, MAP_EMBED, NAV, PHONE, SERVICES, TEL, img, page } from "./data";
 
 const years = new Date().getFullYear() - 1969;
+const newspaper = {
+  src: img("spencer-broadhead-50-years-newspaper-article.webp"),
+  title: "City garage still going strong after 50 years",
+  alt: "Newspaper cutting headlined City garage still going strong after 50 years, featuring Ray Spencer outside the garage",
+};
 
 export function Hero() {
   return (
@@ -79,10 +85,12 @@ export function Services({ title = "Everything your car needs, under one roof." 
             { file: "spencer-broadhead-workshop-.webp", label: "Mechanical repairs", alt: "Engine and transmission removed from a car in our workshop" },
           ].map((photo) => (
             <li key={photo.file}>
-              <a href={img(photo.file)} target="_blank" rel="noopener noreferrer" className="group block" aria-label={`View full photo: ${photo.label} (opens in a new tab)`}>
-                <img src={img(photo.file.replace(".webp", "-thumb.webp"))} alt={photo.alt} width="600" height="450" loading="lazy" decoding="async" className="aspect-[4/3] w-full rounded-md object-cover" />
-                <span className="mt-2 block text-sm text-secondary underline-offset-4 group-hover:underline">{photo.label} <span aria-hidden>↗</span></span>
-              </a>
+              <ImagePopup src={img(photo.file)} title={photo.label} alt={photo.alt}>
+                <button type="button" className="image-popup-trigger group block w-full text-left" aria-label={`View full photo: ${photo.label}`} data-testid={`button-photo-${photo.file}`}>
+                  <img src={img(photo.file.replace(".webp", "-thumb.webp"))} alt={photo.alt} width="600" height="450" loading="lazy" decoding="async" className="aspect-[4/3] w-full rounded-md object-cover" />
+                  <span className="mt-2 block text-sm text-secondary underline-offset-4 group-hover:underline">{photo.label} <span aria-hidden>↗</span></span>
+                </button>
+              </ImagePopup>
             </li>
           ))}
         </ul>
@@ -133,7 +141,7 @@ export function Story() {
       <div className="grid gap-14 lg:grid-cols-12">
         <figure className="lg:col-span-4">
           <img src={img("ray-spencer.webp")} alt="Ray Spencer, co-founder of Spencer & Broadhead" width="1069" height="1471" loading="lazy" decoding="async" className="mx-auto w-full max-w-sm rounded-lg" />
-          <figcaption className="mt-3 text-sm text-muted-foreground">Ray Spencer, co-founder</figcaption>
+          <figcaption className="mt-3 text-sm text-muted-foreground" data-testid="text-ray-caption">Ray Spencer BEM, co-founder — awarded the British Empire Medal for voluntary community service through Kingsland School and the Multiple Sclerosis Society.</figcaption>
         </figure>
         <div className="lg:col-span-8">
           <h2 className="font-display text-4xl font-bold uppercase leading-tight text-secondary md:text-5xl">
@@ -151,11 +159,15 @@ export function Story() {
             <div>
               <h3 className="text-2xl font-semibold text-secondary">Celebrating 50 years</h3>
               <p className="mt-3 leading-relaxed text-muted-foreground">In 2019, the Wakefield Express marked our golden jubilee with a feature on Ray and the garage’s first 50 years on George Street.</p>
-              <a href={img("spencer-broadhead-50-years-newspaper-article.webp")} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-2 font-semibold text-primary underline underline-offset-4">Read the newspaper cutting <ArrowUpRight className="h-4 w-4" /><span className="sr-only"> (opens in a new tab)</span></a>
+              <ImagePopup {...newspaper} readable>
+                <button type="button" className="image-popup-trigger mt-4 inline-flex items-center gap-2 text-left font-semibold text-primary underline underline-offset-4" data-testid="button-read-newspaper">Read the newspaper cutting <ArrowUpRight className="h-4 w-4 shrink-0" aria-hidden="true" /></button>
+              </ImagePopup>
             </div>
-            <a href={img("spencer-broadhead-50-years-newspaper-article.webp")} target="_blank" rel="noopener noreferrer" aria-label="View the full 50th anniversary newspaper article (opens in a new tab)" className="block">
-              <img src={img("spencer-broadhead-50-years-newspaper-article.webp")} alt="Newspaper cutting headlined City garage still going strong after 50 years, featuring Ray Spencer outside the garage" width="928" height="1694" loading="lazy" decoding="async" className="mx-auto w-full max-w-[280px] rounded-sm border border-border" />
-            </a>
+            <ImagePopup {...newspaper} readable>
+              <button type="button" aria-label="View the full 50th anniversary newspaper article" className="image-popup-trigger block w-full" data-testid="button-newspaper-image">
+                <img src={newspaper.src} alt={newspaper.alt} width="928" height="1694" loading="lazy" decoding="async" className="mx-auto w-full max-w-[280px] rounded-sm border border-border" />
+              </button>
+            </ImagePopup>
           </div>
         </div>
       </div>
