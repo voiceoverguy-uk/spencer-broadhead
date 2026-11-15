@@ -72,21 +72,18 @@ export function HomeTestimonials() {
   return (
     <section id="testimonials" aria-labelledby="home-reviews-title" className="relative scroll-mt-[76px] overflow-hidden bg-secondary text-white" data-testid="section-home-testimonials">
       <div className="stripe-rule h-1.5" />
-      <QuoteMark className="pointer-events-none absolute -left-6 top-10 h-48 w-64 text-white/[0.04] md:h-72 md:w-96" />
-      <div className="relative mx-auto grid max-w-7xl gap-12 px-5 py-24 md:px-8 md:py-28 lg:grid-cols-12">
-        <Reveal className="lg:col-span-4">
-          <Eyebrow light>In their words</Eyebrow>
-          <h2 id="home-reviews-title" className="mt-5 font-display text-5xl font-extrabold uppercase leading-[0.92] md:text-6xl">
-            Said at the counter. Written down.
-          </h2>
-          <p className="mt-5 max-w-sm text-white/70">Real words from real customers, quoted as they wrote them.</p>
-          <a href={page("/testimonials")} data-testid="link-all-testimonials" className="group mt-8 inline-flex items-center gap-2 font-semibold text-[#F4C430] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#F4C430]">
-            Read all testimonials <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+      <div className="relative mx-auto grid max-w-7xl gap-5 px-5 py-8 md:px-8 md:py-9 lg:grid-cols-[190px_1fr] lg:items-center lg:gap-10">
+        <div className="flex items-center justify-between gap-4 lg:block">
+          <div>
+            <Eyebrow light>Customer feedback</Eyebrow>
+            <h2 id="home-reviews-title" className="mt-2 font-display text-xl font-semibold text-white">What customers say</h2>
+          </div>
+          <a href={page("/testimonials")} data-testid="link-all-testimonials" className="group inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold text-[#F4C430] underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#F4C430] lg:mt-3">
+            All reviews <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </a>
-        </Reveal>
+        </div>
 
         <div
-          className="lg:col-span-8"
           role="region"
           aria-roledescription="carousel"
           aria-label="Customer testimonials"
@@ -108,31 +105,31 @@ export function HomeTestimonials() {
                   className={`col-start-1 row-start-1 transition-[opacity,transform] duration-700 ease-[cubic-bezier(.2,.7,.2,1)] ${on ? "opacity-100 translate-y-0" : "pointer-events-none invisible opacity-0 translate-y-3"}`}
                   style={on ? undefined : { transitionProperty: "opacity, transform, visibility" }}
                 >
-                  <QuoteMark className="h-8 w-10 text-[#F4C430]" />
-                  <blockquote className="mt-5 font-display text-[clamp(1.35rem,2.2vw,1.75rem)] font-semibold leading-[1.35] text-white">
+                  <blockquote className="flex items-start gap-3 font-sans text-base font-medium leading-relaxed text-white md:text-lg">
+                    <QuoteMark className="mt-1 h-4 w-5 shrink-0 text-[#F4C430]" />
                     {q.quote}
                   </blockquote>
-                  <figcaption className="mt-6 flex items-center gap-4">
+                  <figcaption className="mt-3 flex items-center gap-3">
                     <span className="h-px w-10 bg-[#F4C430]" />
-                    <span className="font-mono text-sm uppercase tracking-[0.18em] text-white/80">{q.name}</span>
+                    <span className="text-sm font-semibold text-white/80">{q.name}</span>
                   </figcaption>
                 </figure>
               );
             })}
           </div>
 
-          <div className="mt-10 flex flex-wrap items-center gap-3 border-t border-white/15 pt-6">
+          <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-white/15 pt-3">
             <button type="button" onClick={() => step(-1)} disabled={pos === 0} aria-label="Previous testimonial" data-testid="button-testimonial-prev"
-              className="grid h-11 w-11 place-items-center rounded-md border border-white/25 transition-colors hover:bg-white hover:text-secondary disabled:opacity-35 disabled:hover:bg-transparent disabled:hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F4C430]">
-              <ArrowLeft className="h-4 w-4" aria-hidden />
+              className="grid h-9 w-9 place-items-center rounded-md border border-white/25 transition-colors hover:bg-white hover:text-secondary disabled:opacity-35 disabled:hover:bg-transparent disabled:hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F4C430]">
+              <ArrowLeft className="h-3.5 w-3.5" aria-hidden />
             </button>
             <button type="button" onClick={() => step(1)} aria-label="Next testimonial" data-testid="button-testimonial-next"
-              className="grid h-11 w-11 place-items-center rounded-md border border-white/25 transition-colors hover:bg-white hover:text-secondary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F4C430]">
-              <ArrowRight className="h-4 w-4" aria-hidden />
+              className="grid h-9 w-9 place-items-center rounded-md border border-white/25 transition-colors hover:bg-white hover:text-secondary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F4C430]">
+              <ArrowRight className="h-3.5 w-3.5" aria-hidden />
             </button>
             <button type="button" onClick={() => setPlaying((p) => !p)} aria-label={playing ? "Pause testimonial rotation" : "Play testimonial rotation"} aria-pressed={!playing} data-testid="button-testimonial-toggle"
-              className="grid h-11 w-11 place-items-center rounded-md border border-white/25 transition-colors hover:bg-white hover:text-secondary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F4C430]">
-              {playing ? <Pause className="h-4 w-4" aria-hidden /> : <Play className="h-4 w-4" aria-hidden />}
+              className="grid h-9 w-9 place-items-center rounded-md border border-white/25 transition-colors hover:bg-white hover:text-secondary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F4C430]">
+              {playing ? <Pause className="h-3.5 w-3.5" aria-hidden /> : <Play className="h-3.5 w-3.5" aria-hidden />}
             </button>
             <div className="ml-auto flex items-center gap-4">
               <span className="font-mono text-xs text-white/60" data-testid="text-testimonial-count">
