@@ -109,10 +109,10 @@ export function HomeTestimonials() {
                   style={on ? undefined : { transitionProperty: "opacity, transform, visibility" }}
                 >
                   <QuoteMark className="h-8 w-10 text-[#F4C430]" />
-                  <blockquote className="mt-6 font-display text-[clamp(1.9rem,3.6vw,3.1rem)] font-semibold leading-[1.08] text-white">
+                  <blockquote className="mt-5 font-display text-[clamp(1.35rem,2.2vw,1.75rem)] font-semibold leading-[1.35] text-white">
                     {q.quote}
                   </blockquote>
-                  <figcaption className="mt-8 flex items-center gap-4">
+                  <figcaption className="mt-6 flex items-center gap-4">
                     <span className="h-px w-10 bg-[#F4C430]" />
                     <span className="font-mono text-sm uppercase tracking-[0.18em] text-white/80">{q.name}</span>
                   </figcaption>
@@ -157,17 +157,17 @@ export function TestimonialWall() {
         {TESTIMONIALS.map((q, i) => (
           <li key={q.id} data-testid={`card-testimonial-${q.id}`}>
             <Reveal>
-              <figure className="grid gap-6 py-14 md:grid-cols-12 md:gap-10 md:py-20">
+              <figure className="grid gap-5 py-9 md:grid-cols-12 md:gap-8 md:py-12">
                 <div className="md:col-span-3">
                   <span className="font-mono text-xs text-accent">{String(i + 1).padStart(2, "0")} / {String(N).padStart(2, "0")}</span>
-                  <figcaption className="mt-3 font-display text-3xl font-bold uppercase leading-none text-secondary md:text-4xl" data-testid={`text-testimonial-name-${q.id}`}>
+                  <figcaption className="mt-2 font-display text-lg font-semibold leading-tight text-secondary md:text-xl" data-testid={`text-testimonial-name-${q.id}`}>
                     {q.name}
                   </figcaption>
-                  <div className="mt-4 h-1 w-12 bg-[#F4C430]" />
+                  <div className="mt-3 h-1 w-10 bg-[#F4C430]" />
                 </div>
                 <blockquote className={`relative md:col-span-9 ${i % 2 ? "md:pl-16" : ""}`}>
                   <QuoteMark className="absolute -top-2 left-0 h-8 w-10 text-accent/80 md:-left-14" />
-                  <p className={`pl-14 font-display font-semibold leading-[1.1] text-foreground md:pl-0 ${q.quote.length > 140 ? "text-[clamp(1.7rem,3vw,2.6rem)]" : "text-[clamp(2rem,3.8vw,3.3rem)]"}`}>
+                  <p className={`pl-14 font-display font-medium leading-[1.35] text-foreground md:pl-0 ${q.quote.length > 140 ? "text-[clamp(1.15rem,1.7vw,1.4rem)]" : "text-[clamp(1.25rem,1.9vw,1.55rem)]"}`}>
                     {q.quote}
                   </p>
                 </blockquote>
