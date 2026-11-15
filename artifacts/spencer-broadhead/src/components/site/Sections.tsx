@@ -256,7 +256,9 @@ export function Visit() {
                     <ArrowUpRight className="h-5 w-5 text-white/30 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white" />
                   </div>
                   <div className="mt-6 font-mono text-[11px] uppercase tracking-[0.2em] text-white/50">{c.k}</div>
-                  <div className="mt-1 break-words text-xl font-semibold md:text-2xl">{c.v}</div>
+                  <div className={`mt-1 font-semibold ${c.id === "email" ? "text-base leading-snug break-normal sm:text-lg md:text-xl" : "break-words text-xl md:text-2xl"}`}>
+                    {c.id === "email" ? <>info@spencerand<wbr />broadhead.co.uk</> : c.v}
+                  </div>
                 </a>
               ))}
             </div>
