@@ -33,6 +33,12 @@ The user subsequently chose live Google review cards instead of the original web
 
 **How to apply:** Keep the integration compatible with static Vercel hosting. Treat the Maps browser key as browser-visible and require API and referrer restrictions. Do not claim a listing or live reviews are verified unless Google actually returns the matching business. Do not silently substitute old testimonials when Google fails.
 
+Verify referrer-restricted integrations from the real HTTPS preview origin, not the screenshot service's localhost origin.
+
+**Why:** The screenshot service received a Google 403 while the real HTTPS browser successfully loaded the same integration and verified the correct business.
+
+**How to apply:** A localhost screenshot failure alone does not prove that a restricted key or its authorized website is broken. Preserve restrictions and use the real browser origin to distinguish an environment mismatch from a genuine API failure.
+
 The user dislikes chunky heading lettering and wants softer typography that remains businesslike.
 
 **Why:** The user explicitly rejected the heavy condensed “Meet the team” heading.

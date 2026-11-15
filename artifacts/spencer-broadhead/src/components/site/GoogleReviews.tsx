@@ -1,187 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import { page } from "./data";
+import { GOOGLE_REVIEWS_URL, loadBusinessReviews, type GoogleReview } from "@/lib/google-reviews";
 
 const REVIEW_INTERVAL = 8000;
-const PLACE_QUERY = "Spencer & Broadhead Ltd, George Street, Wakefield WF1 1DR, UK";
-const PLACE_ID_CACHE_KEY = "spencer-broadhead-google-place-id";
 const GOOGLE_LOGO =
   "https://www.gstatic.com/images/branding/googlelogo/svg/googlelogo_clr_74x24px.svg";
-const GOOGLE_SEARCH_URL =
-  "https://www.google.com/maps/search/?api=1&query=Spencer%20%26%20Broadhead%20Ltd%2C%20Wakefield%20WF1%201DR";
-
-type Attribution = {
-  displayName?: string;
-  uri?: string;
-  photoURI?: string;
-};
-
-type GoogleReview = {
-  rating?: number;
-  text?: string;
-  originalText?: string;
-  authorAttribution?: Attribution;
-};
-
-type PlaceRecord = {
-  id?: string;
-  displayName?: { text?: string } | string;
-  formattedAddress?: string;
-  rating?: number;
-  userRatingCount?: number;
-  reviews?: GoogleReview[];
-  googleMapsURI?: string;
-  attributions?: { provider?: string; providerURI?: string }[];
-  fetchFields: (request: { fields: string[] }) => Promise<void>;
-};
-
-type PlacesLibrary = {
-  Place: {
-    new (options: { id: string }): PlaceRecord;
-    searchByText: (request: {
-      textQuery: string;
-      fields: string[];
-      language: string;
-      region: string;
-      maxResultCount: number;
-    }) => Promise<{ places?: PlaceRecord[] }>;
-  };
-};
-
-declare global {
-  interface Window {
-    spencerGoogleMapsReady?: () => void;
-    google?: {
-      maps?: {
-        importLibrary?: (name: string) => Promise<unknown>;
-      };
-    };
-  }
-}
-
-const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY?.trim();
-let placesLibraryPromise: Promise<PlacesLibrary> | undefined;
-
-function loadPlacesLibrary(): Promise<PlacesLibrary> {
-  if (!API_KEY) return Promise.reject(new Error("Google Maps key is not configured."));
-
-  const importPlaces = async () => {
-    if (!window.google?.maps?.importLibrary) throw new Error("Google Maps could not be loaded.");
-    return (await window.google.maps.importLibrary("places")) as PlacesLibrary;
-  };
-
-  if (window.google?.maps?.importLibrary) return importPlaces();
-  if (placesLibraryPromise) return placesLibraryPromise;
-
-  placesLibraryPromise = new Promise<void>((resolve, reject) => {
-    const script = document.createElement("script");
-    const timeout = window.setTimeout(() => {
-      delete window.spencerGoogleMapsReady;
-      reject(new Error("Google Maps load timed out."));
-    }, 15000);
-    window.spencerGoogleMapsReady = () => {
-      window.clearTimeout(timeout);
-      delete window.spencerGoogleMapsReady;
-      resolve();
-    };
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(API_KEY)}&v=weekly&loading=async&callback=spencerGoogleMapsReady`;
-    script.async = true;
-    script.onerror = () => {
-      window.clearTimeout(timeout);
-      delete window.spencerGoogleMapsReady;
-      reject(new Error("Google Maps could not be loaded."));
-    };
-    document.head.appendChild(script);
-  })
-    .then(importPlaces)
-    .catch((error) => {
-      placesLibraryPromise = undefined;
-      throw error;
-    });
-
-  return placesLibraryPromise;
-}
-
-function displayName(place: PlaceRecord) {
-  return typeof place.displayName === "string"
-    ? place.displayName
-    : place.displayName?.text ?? "";
-}
-
-function isSpencerAndBroadhead(place: PlaceRecord) {
-  const name = displayName(place).toLowerCase();
-  const address = (place.formattedAddress ?? "").toLowerCase().replace(/[^a-z0-9]/g, "");
-  return (
-    name.includes("spencer") &&
-    name.includes("broadhead") &&
-    address.includes("wakefield") &&
-    address.includes("wf11dr")
-  );
-}
-
-function getSavedPlaceId() {
-  try {
-    return window.localStorage.getItem(PLACE_ID_CACHE_KEY);
-  } catch {
-    return null;
-  }
-}
-
-function savePlaceId(id: string | undefined) {
-  if (!id) return;
-  try {
-    window.localStorage.setItem(PLACE_ID_CACHE_KEY, id);
-  } catch {
-    // Storage may be disabled; the current page can still show its live results.
-  }
-}
-
-function clearSavedPlaceId() {
-  try {
-    window.localStorage.removeItem(PLACE_ID_CACHE_KEY);
-  } catch {
-    // Ignore unavailable storage.
-  }
-}
-
-async function loadBusinessReviews() {
-  const { Place } = await loadPlacesLibrary();
-  const detailsFields = [
-    "id",
-    "displayName",
-    "formattedAddress",
-    "rating",
-    "userRatingCount",
-    "reviews",
-    "googleMapsURI",
-    "attributions",
-  ];
-  const savedId = getSavedPlaceId();
-
-  if (savedId) {
-    const savedPlace = new Place({ id: savedId });
-    await savedPlace.fetchFields({ fields: detailsFields });
-    if (isSpencerAndBroadhead(savedPlace)) return savedPlace;
-    clearSavedPlaceId();
-  }
-
-  const { places = [] } = await Place.searchByText({
-    textQuery: PLACE_QUERY,
-    fields: ["id", "displayName", "formattedAddress"],
-    language: "en-GB",
-    region: "GB",
-    maxResultCount: 5,
-  });
-  const match = places.find(isSpencerAndBroadhead);
-  if (!match) throw new Error("The Spencer & Broadhead Google listing could not be verified.");
-
-  await match.fetchFields({ fields: detailsFields });
-  if (!isSpencerAndBroadhead(match)) {
-    throw new Error("The Spencer & Broadhead Google listing could not be verified.");
-  }
-  savePlaceId(match.id);
-  return match;
-}
 
 function GoogleBrand({ className = "" }: { className?: string }) {
   return (
@@ -260,7 +84,7 @@ type ReviewsData = {
   userRatingCount?: number;
   reviews: GoogleReview[];
   mapsUrl: string;
-  attributions: NonNullable<PlaceRecord["attributions"]>;
+  attributions: { provider?: string; providerURI?: string }[];
 };
 
 type ReviewsStatus = "loading" | "ready" | "api-error" | "listing-error";
@@ -278,7 +102,7 @@ function useGoogleReviews() {
           rating: place.rating,
           userRatingCount: place.userRatingCount,
           reviews: place.reviews ?? [],
-          mapsUrl: place.googleMapsURI || GOOGLE_SEARCH_URL,
+          mapsUrl: place.googleMapsURI || GOOGLE_REVIEWS_URL,
           attributions: place.attributions ?? [],
         });
         setStatus("ready");
@@ -398,7 +222,7 @@ export function HomeGoogleReviews() {
           {(status === "api-error" || status === "listing-error") && <ReviewError dark status={status} />}
           {review && <ReviewQuote review={review} compact />}
           {status === "ready" && !review && <p className="text-sm text-white/75">No written Google reviews are available to show.</p>}
-          <a className="mt-2 inline-block text-xs text-white/75 underline underline-offset-4" href={data?.mapsUrl || GOOGLE_SEARCH_URL} target="_blank" rel="noreferrer">Read on Google</a>
+          <a className="mt-2 inline-block text-xs text-white/75 underline underline-offset-4" href={data?.mapsUrl || GOOGLE_REVIEWS_URL} target="_blank" rel="noreferrer">Read on Google</a>
           <ProviderAttributions data={data} />
         </div>
       </div>
@@ -421,7 +245,7 @@ export function GoogleReviewsWall() {
           {data && <ReviewSummary data={data} />}
         </div>
         <a
-          href={data?.mapsUrl || GOOGLE_SEARCH_URL}
+          href={data?.mapsUrl || GOOGLE_REVIEWS_URL}
           target="_blank"
           rel="noreferrer"
           className="inline-flex items-center gap-2 text-sm font-semibold text-secondary underline underline-offset-4"

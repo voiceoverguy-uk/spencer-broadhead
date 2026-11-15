@@ -53,4 +53,3 @@ export const SERVICES = [
   { code: "07", name: "Air conditioning", line: "Air con not blowing cold? We'll look at why and get it working again." },
   { code: "08", name: "Exhausts", line: "Blowing, rattling or failing the MOT. Exhaust repairs and replacements." },
 ];
-
