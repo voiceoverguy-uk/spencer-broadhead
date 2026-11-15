@@ -238,7 +238,7 @@ export function Visit() {
         <h2 className="sr-only">Contact details and opening hours</h2>
         <div className="grid gap-6 lg:grid-cols-12">
           <Reveal className="lg:col-span-7">
-            <div className="grid gap-px overflow-hidden rounded-lg bg-white/10 sm:grid-cols-2">
+            <div className="overflow-hidden rounded-lg border border-white/10 bg-white/5">
               {[
                 { href: TEL, icon: Phone, k: "Call", v: PHONE, id: "call" },
                 { href: MAILTO, icon: Mail, k: "Email", v: EMAIL, id: "email" },
@@ -249,16 +249,18 @@ export function Visit() {
                   href={c.href}
                   data-testid={`link-contact-${c.id}`}
                   {...(c.ext ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                  className={`group bg-[#1C2759] p-7 transition-colors hover:bg-[#263B96] ${c.id === "directions" ? "sm:col-span-2" : ""}`}
+                  className="group flex items-center gap-4 border-b border-white/10 bg-[#1C2759] px-5 py-5 transition-colors last:border-b-0 hover:bg-[#263B96] md:px-6"
                 >
-                  <div className="flex items-center justify-between">
+                  <div className="shrink-0">
                     <c.icon className="h-5 w-5 text-[#F4C430]" />
-                    <ArrowUpRight className="h-5 w-5 text-white/30 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white" />
                   </div>
-                  <div className="mt-6 font-mono text-[11px] uppercase tracking-[0.2em] text-white/50">{c.k}</div>
-                  <div className={`mt-1 font-semibold ${c.id === "email" ? "text-base leading-snug break-normal sm:text-lg md:text-xl" : "break-words text-xl md:text-2xl"}`}>
-                    {c.id === "email" ? <>info@spencerand<wbr />broadhead.co.uk</> : c.v}
+                  <div className="min-w-0 flex-1">
+                    <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/50">{c.k}</div>
+                    <div className={`mt-1 font-semibold ${c.id === "email" ? "whitespace-nowrap text-sm sm:text-base md:text-lg" : "break-words text-lg md:text-xl"}`}>
+                      {c.v}
+                    </div>
                   </div>
+                  <ArrowUpRight className="h-5 w-5 shrink-0 text-white/30 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white" />
                 </a>
               ))}
             </div>
