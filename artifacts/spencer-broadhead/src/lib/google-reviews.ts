@@ -13,6 +13,7 @@ export type GoogleReview = {
   rating?: number;
   text?: string;
   originalText?: string;
+  publishTime?: Date;
   authorAttribution?: Attribution;
 };
 

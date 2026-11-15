@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import { page } from "./data";
 import { GOOGLE_REVIEWS_URL, loadBusinessReviews, type GoogleReview } from "@/lib/google-reviews";
+import { formatRecentReviewDate } from "@/lib/review-date";
 import { shuffledReviewOrder } from "@/lib/review-order";
 
 const REVIEW_INTERVAL = 8000;
@@ -39,6 +40,7 @@ function Stars({ rating }: { rating: number }) {
 function ReviewAuthor({ review }: { review: GoogleReview }) {
   const author = review.authorAttribution;
   const name = author?.displayName || "Google reviewer";
+  const reviewDate = review.publishTime && formatRecentReviewDate(review.publishTime);
   const nameElement = author?.uri ? (
     <a href={author.uri} target="_blank" rel="noreferrer" className="font-semibold underline-offset-2 hover:underline">
       {name}
@@ -56,7 +58,14 @@ function ReviewAuthor({ review }: { review: GoogleReview }) {
           {name.slice(0, 1).toUpperCase()}
         </span>
       )}
-      {nameElement}
+      <span className="flex flex-wrap items-baseline gap-x-2">
+        {nameElement}
+        {reviewDate && (
+          <time dateTime={review.publishTime?.toISOString()} className="text-xs text-current/65">
+            {reviewDate}
+          </time>
+        )}
+      </span>
     </div>
   );
 }

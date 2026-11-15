@@ -45,6 +45,13 @@ globalThis.window = {
 
 try {
   const { shuffledReviewOrder } = await server.ssrLoadModule("/src/lib/review-order.ts");
+  const { formatRecentReviewDate } = await server.ssrLoadModule("/src/lib/review-date.ts");
+  const now = new Date("2026-11-15T12:00:00Z");
+  assert.equal(formatRecentReviewDate(new Date("2021-11-15T12:00:00Z"), now), "15 November 2021");
+  assert.equal(formatRecentReviewDate(new Date("2021-11-14T23:59:59Z"), now), undefined);
+  assert.equal(formatRecentReviewDate(undefined, now), undefined);
+  assert.equal(formatRecentReviewDate(new Date("invalid"), now), undefined);
+  assert.equal(formatRecentReviewDate(new Date("2027-01-01T00:00:00Z"), now), undefined);
   assert.deepEqual(shuffledReviewOrder(0), []);
   assert.deepEqual(shuffledReviewOrder(1, 0), [0]);
   let previous = -1;
@@ -77,7 +84,7 @@ try {
   rejectRequest = false;
   await loadBusinessReviews();
   assert.equal(requests, 4, "Failed requests must allow a later retry.");
-  console.log("Google review checks passed: shuffled full cycles, no adjacent repeats, exact listing, deduplication, attribution fields, mismatch rejection and retry.");
+  console.log("Google review checks passed: five-year date cutoff, shuffled full cycles, no adjacent repeats, exact listing, deduplication, attribution fields, mismatch rejection and retry.");
 } finally {
   delete globalThis.window;
   await server.close();
