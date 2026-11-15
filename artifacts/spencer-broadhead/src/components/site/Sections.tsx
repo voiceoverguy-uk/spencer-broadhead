@@ -261,24 +261,7 @@ export function Visit() {
             </div>
           </Reveal>
           <Reveal className="lg:col-span-5" delay={120}>
-            <figure className="overflow-hidden rounded-lg border border-white/10 bg-white/[0.04]">
-              <img
-                src={img("garage-outside-sharp.webp")}
-                alt="Blue Spencer & Broadhead and MOT signs on the brick garage building on George Street, Wakefield"
-                width="1600"
-                height="650"
-                loading="lazy"
-                decoding="async"
-                className="h-auto w-full"
-              />
-              <figcaption className="p-6">
-                <h3 className="font-display text-2xl text-white">Look for the blue signs on George Street.</h3>
-                <a href={DIRECTIONS} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-2 font-semibold text-[#F4C430] underline-offset-4 hover:underline" data-testid="link-contact-photo-directions">
-                  <MapPin className="h-4 w-4" aria-hidden /> Get directions
-                </a>
-              </figcaption>
-            </figure>
-            <div className="mt-6 h-[320px] overflow-hidden rounded-lg border border-white/10">
+            <div className="h-[320px] overflow-hidden rounded-lg border border-white/10">
               <iframe
                 title="Map showing Spencer & Broadhead on George Street, Wakefield"
                 src={MAP_EMBED}
