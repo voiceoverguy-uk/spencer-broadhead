@@ -32,3 +32,9 @@ The user dislikes chunky heading lettering and wants softer typography that rema
 **Why:** The user explicitly rejected the heavy condensed “Meet the team” heading.
 
 **How to apply:** Keep headings professional and readable without restoring heavy condensed, all-capital display typography.
+
+The user wants the site streamlined, closer to the simplicity of the original, without lots of repetition.
+
+**Why:** The user liked the design but felt it had become very busy and repetitive.
+
+**How to apply:** Give each page a distinct purpose. Avoid repeating the garage story, large contact prompts and repair process across pages; keep homepage previews concise.

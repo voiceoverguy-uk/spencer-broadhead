@@ -1,7 +1,6 @@
-import { Mail, MapPin, Phone } from "lucide-react";
-import { Btn, Eyebrow, Reveal } from "./ui";
+import { Reveal } from "./ui";
 import { NextSteps, PageIntro } from "./Sections";
-import { DIRECTIONS, EMAIL, MAILTO, PHONE, TEL, img, page } from "./data";
+import { img, page } from "./data";
 
 type Member = {
   id: string;
@@ -146,44 +145,16 @@ export function TeamPage() {
         title="Meet the team"
         lead="When you ring, it's one of us who answers. When your car's on the ramp, it's one of us working on it. Here are the faces behind Spencer & Broadhead."
         image="garage-inside.jpg"
-      >
-        <Btn href={TEL} testId="button-intro-call"><Phone className="h-4 w-4" /> Call {PHONE}</Btn>
-        <Btn href="#team" variant="light" testId="button-intro-team">Say hello below</Btn>
-      </PageIntro>
+      />
 
       <section id="team" className="mx-auto max-w-7xl px-5 py-20 md:px-8 md:py-24">
-        <Reveal>
-          <Eyebrow>Family-run, still</Eyebrow>
-          <p className="mt-5 max-w-2xl font-display text-4xl font-extrabold uppercase leading-[0.95] text-secondary md:text-5xl">
-            Four familiar faces. No call centre.
-          </p>
-          <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
-            Some of us have been here for decades, one of us is family, and all of us would rather explain a repair properly than rush you out the door.
-          </p>
-        </Reveal>
-        <ul className="mt-12 grid gap-5 xl:grid-cols-2">
+        <ul className="grid gap-5 xl:grid-cols-2">
           {TEAM.map((m, i) => (
             <li key={m.id}>
               <MemberCard m={m} index={i} />
             </li>
           ))}
         </ul>
-      </section>
-
-      <section className="relative overflow-hidden bg-[#1C2759] text-white">
-        <div className="stripe-rule h-2 w-full" />
-        <div className="mx-auto grid max-w-7xl gap-8 px-5 py-16 md:grid-cols-[1.3fr_1fr] md:items-end md:px-8 md:py-20">
-          <Reveal>
-            <Eyebrow light>Talk to a real person</Eyebrow>
-            <h2 className="mt-5 font-display text-5xl font-extrabold uppercase leading-[0.92] md:text-6xl">Ask for any of us by name.</h2>
-            <p className="mt-4 max-w-xl text-lg text-white/75">Call, email or pop into the workshop. We'll talk you through what your car needs in plain English.</p>
-          </Reveal>
-          <Reveal delay={120} className="flex flex-wrap gap-3 md:justify-end">
-            <Btn href={TEL} testId="button-team-call"><Phone className="h-4 w-4" /> {PHONE}</Btn>
-            <Btn href={MAILTO} variant="light" testId="button-team-email"><Mail className="h-4 w-4" /> <span className="sr-only">Email </span>{EMAIL}</Btn>
-            <Btn href={DIRECTIONS} external variant="light" testId="button-team-directions"><MapPin className="h-4 w-4" /> Directions</Btn>
-          </Reveal>
-        </div>
       </section>
 
       <NextSteps

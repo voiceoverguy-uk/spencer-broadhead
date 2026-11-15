@@ -1,43 +1,27 @@
-import { ArrowRight, Home as HomeIcon, Mail, MapPin, Phone } from "lucide-react";
-import { Btn, Eyebrow, Reveal } from "./ui";
-import { Bodywork, Exterior, Hero, How, Marquee, NextSteps, PageIntro, Services, Story, Visit } from "./Sections";
+import { ArrowRight, Home as HomeIcon, Mail, Phone } from "lucide-react";
+import { Btn, Eyebrow } from "./ui";
+import { Bodywork, Hero, How, NextSteps, PageIntro, Services, Story, Visit } from "./Sections";
 import { HomeTestimonials, TestimonialWall } from "./Testimonials";
-import { DIRECTIONS, MAILTO, PHONE, SERVICES, TEL, img, page } from "./data";
-
-const years = new Date().getFullYear() - 1969;
+import { MAILTO, PHONE, TEL, page } from "./data";
 
 function Overview() {
   const tiles = [
-    { id: "services", href: page("/services"), n: "01", t: "Servicing, MOT & repairs", d: `${SERVICES.length} core services, from interim services to clutches, brakes and diagnostics.`, image: "garage-inside.jpg" },
-    { id: "bodywork", href: page("/bodywork"), n: "02", t: "Accident & bodywork", d: "Dents, scrapes and accident damage repaired in our own workshop.", image: null },
-    { id: "about", href: page("/about"), n: "03", t: "Family-run since 1969", d: `${years} years on George Street, and how we still work today.`, image: null },
-    { id: "contact", href: page("/contact"), n: "04", t: "Hours & directions", d: "Phone, email, opening hours and how to find us in central Wakefield.", image: "garage-outside.jpg" },
+    { id: "services", href: page("/services"), t: "Servicing, MOT & repairs", d: "Routine servicing, fault finding and mechanical repairs." },
+    { id: "bodywork", href: page("/bodywork"), t: "Accident & bodywork", d: "Dents, scrapes and accident damage repaired in-house." },
   ];
   return (
-    <section className="mx-auto max-w-7xl px-5 py-24 md:px-8 md:py-28">
-      <Reveal>
-        <Eyebrow>Find your way around</Eyebrow>
-        <h2 className="mt-5 max-w-3xl font-display text-5xl font-extrabold uppercase leading-[0.92] text-secondary md:text-6xl">One garage. Everything under one roof.</h2>
-      </Reveal>
-      <ul className="mt-12 grid gap-4 md:grid-cols-6">
-        {tiles.map((t, i) => (
-          <li key={t.id} className={i === 0 || i === 3 ? "md:col-span-4" : "md:col-span-2"}>
-            <Reveal delay={(i % 2) * 90} className="h-full">
-              <a href={t.href} data-testid={`link-overview-${t.id}`} className="group relative flex h-full min-h-[260px] flex-col justify-end overflow-hidden rounded-lg bg-secondary p-7 text-white">
-                {t.image && (
-                  <>
-                    <img src={img(t.image)} alt="" width="1600" height="650" loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-cover opacity-40 transition-transform duration-[1.2s] group-hover:scale-105" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#1C2759] via-[#1C2759]/60 to-transparent" />
-                  </>
-                )}
-                <span className="relative font-mono text-xs text-[#F4C430]">{t.n}</span>
-                <span className="relative mt-3 font-display text-3xl font-bold uppercase leading-none md:text-4xl">{t.t}</span>
-                <span className="relative mt-3 max-w-md text-white/75">{t.d}</span>
-                <span className="relative mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[#F4C430]">
-                  Read more <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </span>
+    <section aria-label="Our services" className="mx-auto max-w-7xl px-5 py-12 md:px-8 md:py-16">
+      <ul className="grid gap-8 md:grid-cols-2 md:gap-12">
+        {tiles.map((t) => (
+          <li key={t.id}>
+            <div className="h-full">
+              <a href={t.href} data-testid={`link-overview-${t.id}`} className="group block h-full border-t border-secondary/20 pt-6 text-secondary">
+                <h2 className="flex items-center justify-between gap-4 font-display text-2xl md:text-3xl">
+                  {t.t}<ArrowRight className="h-5 w-5 shrink-0 text-accent transition-transform group-hover:translate-x-1" />
+                </h2>
+                <p className="mt-2 text-muted-foreground">{t.d}</p>
               </a>
-            </Reveal>
+            </div>
           </li>
         ))}
       </ul>
@@ -49,7 +33,6 @@ export function HomePage() {
   return (
     <>
       <Hero />
-      <Marquee />
       <Overview />
       <HomeTestimonials />
     </>
@@ -69,7 +52,6 @@ export function ServicesPage() {
         <Btn href={page("/contact")} variant="light" testId="button-intro-contact">Hours &amp; directions</Btn>
       </PageIntro>
       <Services title="Every service, under one roof." />
-      <How />
       <NextSteps
         items={[
           { id: "bodywork", href: page("/bodywork"), label: "Bodywork repairs", line: "Accident damage, dents and scrapes fixed in the same workshop." },
@@ -93,7 +75,6 @@ export function BodyworkPage() {
         <Btn href={MAILTO} variant="light" testId="button-intro-email"><Mail className="h-4 w-4" /> Email us photos</Btn>
       </PageIntro>
       <Bodywork />
-      <How />
       <NextSteps
         items={[
           { id: "services", href: page("/services"), label: "Servicing & MOTs", line: "Mechanical work, diagnostics and MOT testing on site." },
@@ -115,7 +96,6 @@ export function AboutPage() {
       />
       <Story />
       <How />
-      <Exterior />
       <NextSteps
         items={[
           { id: "team", href: page("/our-team"), label: "Meet the team", line: "David, Rob, Andy and Lewis, the people looking after your car." },
@@ -135,10 +115,7 @@ export function ContactPage() {
         title="Contact Spencer & Broadhead"
         lead="We don't take bookings online. Call or email and a real person will find a time that works for you."
         image="garage-outside.jpg"
-      >
-        <Btn href={TEL} testId="button-intro-call"><Phone className="h-4 w-4" /> Call {PHONE}</Btn>
-        <Btn href={DIRECTIONS} external variant="light" testId="button-intro-directions"><MapPin className="h-4 w-4" /> Get directions</Btn>
-      </PageIntro>
+      />
       <Visit />
     </>
   );
@@ -152,10 +129,7 @@ export function TestimonialsPage() {
         title="What our customers say"
         lead="A few words from the people who bring their cars to George Street. Printed exactly as they wrote them."
         image="garage-outside.jpg"
-      >
-        <Btn href={TEL} testId="button-intro-call"><Phone className="h-4 w-4" /> Call {PHONE}</Btn>
-        <Btn href={page("/contact")} variant="light" testId="button-intro-contact">Hours &amp; directions</Btn>
-      </PageIntro>
+      />
       <TestimonialWall />
       <NextSteps
         items={[

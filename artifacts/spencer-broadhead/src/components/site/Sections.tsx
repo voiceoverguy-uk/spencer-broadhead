@@ -12,35 +12,18 @@ export function Hero() {
         <img src={img("garage-inside.jpg")} alt="" width="1600" height="650" fetchPriority="high" className="kenburns h-full w-full object-cover" />
         <div className="hero-shade absolute inset-0" />
       </div>
-      <div className="relative mx-auto grid min-h-[100dvh] max-w-7xl items-end gap-10 px-5 pb-16 pt-32 md:px-8 lg:grid-cols-12 lg:pb-24">
-        <div className="lg:col-span-8">
+      <div className="relative mx-auto flex min-h-[620px] max-w-7xl items-center px-5 pb-16 pt-36 md:min-h-[680px] md:px-8">
+        <div className="max-w-3xl">
           <div className="rise"><Eyebrow light>Independent garage, George Street, Wakefield</Eyebrow></div>
-          <h1 className="rise mt-6 font-display text-[clamp(3.2rem,9vw,7.5rem)] font-extrabold uppercase leading-[0.88]" style={{ animationDelay: "120ms" }}>
-            <span className="mb-4 block font-sans text-base font-semibold normal-case leading-normal tracking-normal text-white/80">Car servicing, MOTs &amp; repairs in Wakefield</span>
-            Straight answers.
-            <br />
-            <span className="text-[#F4C430]">Proper</span> repairs.
-          </h1>
+          <h1 className="rise mt-6 font-display text-[clamp(2.8rem,6vw,4.5rem)] leading-[1.08]" style={{ animationDelay: "120ms" }}>Car servicing, MOTs &amp; repairs in Wakefield</h1>
           <p className="rise mt-7 max-w-xl text-lg text-white/80 md:text-xl" style={{ animationDelay: "240ms" }}>
-            Family-run since 1969. Servicing, MOTs, diagnostics and repairs from experienced technicians who'll tell you what your car actually needs.
+            Family-run since 1969. Experienced technicians, straightforward advice and only the work your car needs.
           </p>
           <div className="rise mt-9 flex flex-wrap gap-3" style={{ animationDelay: "360ms" }}>
             <Btn href={TEL} testId="button-hero-call"><Phone className="h-4 w-4" /> Call {PHONE}</Btn>
             <Btn href={page("/services")} variant="light" testId="button-hero-services">See what we do <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></Btn>
           </div>
-        </div>
-        <div className="rise lg:col-span-4 lg:justify-self-end" style={{ animationDelay: "480ms" }}>
-          <div className="w-full max-w-sm rounded-lg border border-white/15 bg-[#1C2759]/85 p-6 backdrop-blur-md">
-            <div className="flex items-baseline justify-between">
-              <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/60">On George Street for</span>
-            </div>
-            <div className="mt-1 font-display text-7xl font-extrabold leading-none">{years}<span className="text-3xl text-[#F4C430]"> years</span></div>
-            <div className="mt-5 space-y-2 border-t border-white/15 pt-4 text-sm text-white/80">
-              <div className="flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-[#F4C430]" /> RAC Repair &amp; Go approved</div>
-              <div className="flex items-center gap-2"><Car className="h-4 w-4 text-[#F4C430]" /> Free loan car, subject to availability</div>
-              <div className="flex items-center gap-2"><Clock className="h-4 w-4 text-[#F4C430]" /> Mon to Fri, 08:30 to 17:30</div>
-            </div>
-          </div>
+          <p className="mt-7 flex items-center gap-2 text-sm text-white/80"><ShieldCheck className="h-4 w-4 shrink-0 text-[#F4C430]" /> RAC Repair &amp; Go approved</p>
         </div>
       </div>
       <div className="stripe-rule h-2 w-full" />
@@ -127,10 +110,6 @@ export function Bodywork() {
               <div className="text-sm text-white/65">If you need one, subject to availability. Just ask.</div>
             </div>
           </div>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Btn href={TEL} testId="button-bodywork-call"><Phone className="h-4 w-4" /> Call about a repair</Btn>
-            <Btn href={MAILTO} variant="light" testId="button-bodywork-email"><Mail className="h-4 w-4" /> Email us photos</Btn>
-          </div>
         </Reveal>
       </div>
     </section>
@@ -158,18 +137,6 @@ export function Story() {
               Plenty has changed under the bonnet since then. What hasn't is the way we work: look at the car properly, explain what we've found in plain English, and only do the work you've agreed to.
             </p>
           </div>
-          <dl className="mt-10 grid grid-cols-2 gap-6 border-t border-border pt-8 sm:grid-cols-3">
-            {[
-              ["1969", "Founded by Ray Spencer and Barry Broadhead"],
-              ["Family", "Run and independent, not part of a chain"],
-              ["RAC", "Repair & Go approved garage"],
-            ].map(([k, v]) => (
-              <div key={k}>
-                <dt className="font-display text-3xl font-extrabold uppercase text-accent">{k}</dt>
-                <dd className="mt-1 text-sm text-muted-foreground">{v}</dd>
-              </div>
-            ))}
-          </dl>
         </Reveal>
       </div>
     </section>
@@ -236,12 +203,8 @@ export function Visit() {
   return (
     <section id="visit" className="bg-[#1C2759] text-white">
       <div className="mx-auto max-w-7xl px-5 py-24 md:px-8 md:py-28">
-        <Reveal>
-          <Eyebrow light>Visit or get in touch</Eyebrow>
-          <h2 className="mt-5 max-w-3xl font-display text-5xl font-extrabold uppercase leading-[0.92] md:text-7xl">Need your car looked at? Give us a ring.</h2>
-          <p className="mt-5 max-w-xl text-lg text-white/70">We don't take bookings online. Call or email and a real person will find a time that works for you.</p>
-        </Reveal>
-        <div className="mt-14 grid gap-6 lg:grid-cols-12">
+        <h2 className="sr-only">Contact details and opening hours</h2>
+        <div className="grid gap-6 lg:grid-cols-12">
           <Reveal className="lg:col-span-7">
             <div className="grid gap-px overflow-hidden rounded-lg bg-white/10 sm:grid-cols-2">
               {[
@@ -290,7 +253,6 @@ export function Visit() {
               />
               <figcaption className="p-6">
                 <h3 className="font-display text-2xl text-white">Look for the blue signs on George Street.</h3>
-                <p className="mt-3 text-white/75">This is the garage you're looking for. Find us on George Street, Wakefield, WF1 1DR.</p>
                 <a href={DIRECTIONS} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-2 font-semibold text-[#F4C430] underline-offset-4 hover:underline" data-testid="link-contact-photo-directions">
                   <MapPin className="h-4 w-4" aria-hidden /> Get directions
                 </a>
@@ -373,18 +335,14 @@ export function PageIntro({ eyebrow, title, lead, image, imageAlt, children }: {
 export function NextSteps({ items }: { items: { href: string; label: string; line: string; id: string }[] }) {
   return (
     <section className="mx-auto max-w-7xl px-5 py-20 md:px-8">
-      <Reveal>
-        <Eyebrow>Where next</Eyebrow>
-      </Reveal>
-      <ul className={`mt-8 grid gap-px overflow-hidden rounded-lg border border-border bg-border ${items.length === 3 ? "md:grid-cols-3" : "md:grid-cols-2"}`}>
+      <ul className={`grid gap-6 border-t border-border pt-6 ${items.length === 3 ? "md:grid-cols-3" : "md:grid-cols-2"}`}>
         {items.map((it) => (
           <li key={it.id}>
-            <a href={it.href} data-testid={`link-next-${it.id}`} className="group flex h-full items-start justify-between gap-6 bg-card p-8 transition-colors duration-300 hover:bg-secondary">
+            <a href={it.href} data-testid={`link-next-${it.id}`} className="group flex h-full items-start justify-between gap-6 py-2">
               <span>
-                <span className="block font-display text-3xl font-bold uppercase text-secondary transition-colors group-hover:text-white">{it.label}</span>
-                <span className="mt-2 block text-muted-foreground transition-colors group-hover:text-white/75">{it.line}</span>
+                <span className="block text-xl font-semibold text-secondary group-hover:underline">{it.label}</span>
               </span>
-              <ArrowRight className="mt-2 h-5 w-5 shrink-0 text-accent transition-transform duration-300 group-hover:translate-x-1 group-hover:text-[#F4C430]" />
+              <ArrowRight className="mt-1 h-4 w-4 shrink-0 text-accent transition-transform duration-300 group-hover:translate-x-1" />
             </a>
           </li>
         ))}

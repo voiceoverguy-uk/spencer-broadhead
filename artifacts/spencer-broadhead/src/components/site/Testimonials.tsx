@@ -75,8 +75,7 @@ export function HomeTestimonials() {
       <div className="relative mx-auto grid max-w-7xl gap-5 px-5 py-8 md:px-8 md:py-9 lg:grid-cols-[190px_1fr] lg:items-center lg:gap-10">
         <div className="flex items-center justify-between gap-4 lg:block">
           <div>
-            <Eyebrow light>Customer feedback</Eyebrow>
-            <h2 id="home-reviews-title" className="mt-2 font-display text-xl font-semibold text-white">What customers say</h2>
+            <h2 id="home-reviews-title" className="text-xl font-semibold text-white">What customers say</h2>
           </div>
           <a href={page("/testimonials")} data-testid="link-all-testimonials" className="group inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold text-[#F4C430] underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#F4C430] lg:mt-3">
             All reviews <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
