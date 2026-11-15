@@ -89,7 +89,7 @@ export function Header({ current }: { current: RouteKey }) {
         className="fixed inset-x-0 top-[76px] bottom-0 overflow-y-auto bg-white md:hidden"
       >
         <nav className="flex flex-col px-6 pt-6 pb-24" aria-label="Mobile">
-          {[{ key: "home" as RouteKey, href: page("/"), label: "Home" }, ...NAV].map((n, i) => {
+          {NAV.map((n, i) => {
             const on = current === n.key;
             return (
               <a

@@ -35,6 +35,7 @@ export function resolveRoute(pathname: string): RouteKey {
 }
 
 export const NAV: { key: RouteKey; href: string; label: string }[] = [
+  { key: "home", href: page("/"), label: "Home" },
   { key: "services", href: page("/services"), label: "Services" },
   { key: "bodywork", href: page("/bodywork"), label: "Bodywork" },
   { key: "about", href: page("/about"), label: "About us" },

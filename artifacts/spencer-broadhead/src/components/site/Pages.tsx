@@ -52,7 +52,6 @@ export function HomePage() {
       <Marquee />
       <Overview />
       <HomeTestimonials />
-      <Exterior />
     </>
   );
 }
@@ -141,7 +140,6 @@ export function ContactPage() {
         <Btn href={DIRECTIONS} external variant="light" testId="button-intro-directions"><MapPin className="h-4 w-4" /> Get directions</Btn>
       </PageIntro>
       <Visit />
-      <Exterior />
     </>
   );
 }

@@ -278,11 +278,29 @@ export function Visit() {
             </div>
           </Reveal>
           <Reveal className="lg:col-span-5" delay={120}>
-            <div className="h-full min-h-[360px] overflow-hidden rounded-lg border border-white/10">
+            <figure className="overflow-hidden rounded-lg border border-white/10 bg-white/[0.04]">
+              <img
+                src={img("garage-outside.jpg")}
+                alt="Blue Spencer & Broadhead and MOT signs on the brick garage building on George Street, Wakefield"
+                width="1600"
+                height="650"
+                loading="lazy"
+                decoding="async"
+                className="h-auto w-full"
+              />
+              <figcaption className="p-6">
+                <h3 className="font-display text-2xl text-white">Look for the blue signs on George Street.</h3>
+                <p className="mt-3 text-white/75">This is the garage you're looking for. Find us on George Street, Wakefield, WF1 1DR.</p>
+                <a href={DIRECTIONS} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-2 font-semibold text-[#F4C430] underline-offset-4 hover:underline" data-testid="link-contact-photo-directions">
+                  <MapPin className="h-4 w-4" aria-hidden /> Get directions
+                </a>
+              </figcaption>
+            </figure>
+            <div className="mt-6 h-[320px] overflow-hidden rounded-lg border border-white/10">
               <iframe
                 title="Map showing Spencer & Broadhead on George Street, Wakefield"
                 src={MAP_EMBED}
-                className="h-full min-h-[360px] w-full grayscale-[40%]"
+                className="h-full w-full grayscale-[40%]"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
               />
@@ -311,7 +329,6 @@ export function Footer() {
       </div>
       <nav aria-label="Footer" className="mx-auto max-w-7xl px-5 pb-6 md:px-8">
         <ul className="flex flex-wrap gap-x-6 gap-y-2 border-t border-white/10 pt-6 text-sm font-semibold">
-          <li><a href={page("/")} data-testid="link-footer-home" className="hover:text-white">Home</a></li>
           {NAV.map((n) => (
             <li key={n.key}><a href={n.href} data-testid={`link-footer-${n.key}`} className="hover:text-white">{n.label}</a></li>
           ))}
