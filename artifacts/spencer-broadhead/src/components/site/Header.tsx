@@ -6,6 +6,34 @@ export function Header({ current }: { current: RouteKey }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const btnRef = useRef<HTMLButtonElement>(null);
+  const navRef = useRef<HTMLElement>(null);
+  const linkRefs = useRef(new Map<RouteKey, HTMLAnchorElement>());
+  const [hoveredKey, setHoveredKey] = useState<RouteKey | null>(null);
+  const [focusedKey, setFocusedKey] = useState<RouteKey | null>(null);
+  const [indicator, setIndicator] = useState({ left: 0, width: 0 });
+  const indicatorKey = focusedKey ?? hoveredKey ?? current;
+
+  useEffect(() => {
+    const nav = navRef.current;
+    const link = linkRefs.current.get(indicatorKey);
+    if (!nav || !link) return;
+
+    const updateIndicator = () => {
+      const navBounds = nav.getBoundingClientRect();
+      const linkBounds = link.getBoundingClientRect();
+      const style = window.getComputedStyle(link);
+      const inset = Number.parseFloat(style.paddingLeft);
+      const rightInset = Number.parseFloat(style.paddingRight);
+      setIndicator({
+        left: linkBounds.left - navBounds.left + inset,
+        width: linkBounds.width - inset - rightInset,
+      });
+    };
+
+    updateIndicator();
+    window.addEventListener("resize", updateIndicator);
+    return () => window.removeEventListener("resize", updateIndicator);
+  }, [indicatorKey]);
 
   useEffect(() => {
     const update = () => setScrolled(window.scrollY > 12);
@@ -52,24 +80,42 @@ export function Header({ current }: { current: RouteKey }) {
           </span>
         </a>
 
-        <nav className="hidden items-center gap-1 md:flex" aria-label="Main">
+        <nav
+          ref={navRef}
+          className="relative hidden items-center gap-1 md:flex"
+          aria-label="Main"
+          onPointerLeave={() => setHoveredKey(null)}
+          onBlur={(event) => {
+            if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+              setFocusedKey(null);
+            }
+          }}
+        >
           {NAV.map((n) => {
             const on = current === n.key;
             return (
               <a
                 key={n.key}
+                ref={(link) => {
+                  if (link) linkRefs.current.set(n.key, link);
+                  else linkRefs.current.delete(n.key);
+                }}
                 href={n.href}
                 aria-current={on ? "page" : undefined}
                 data-testid={`link-nav-${n.key}`}
+                onPointerEnter={() => setHoveredKey(n.key)}
+                onFocus={() => setFocusedKey(n.key)}
                 className={`relative whitespace-nowrap px-2 py-2 text-[14px] font-semibold lg:px-3 lg:text-[15px] transition-colors ${on ? "text-primary" : "text-secondary/80 hover:text-primary"}`}
               >
                 {n.label}
-                <span
-                  className={`absolute inset-x-2 lg:inset-x-3 -bottom-0.5 h-[2px] origin-left bg-primary transition-transform duration-300 ${on ? "scale-x-100" : "scale-x-0"}`}
-                />
               </a>
             );
           })}
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute -bottom-0.5 h-[2px] bg-primary transition-[left,width] duration-300 ease-out"
+            style={{ left: indicator.left, width: indicator.width }}
+          />
         </nav>
 
         <div className="flex items-center gap-2">
