@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import { page } from "./data";
 import { GOOGLE_REVIEWS_URL, loadBusinessReviews, type GoogleReview } from "@/lib/google-reviews";
@@ -72,6 +72,24 @@ function ReviewAuthor({ review }: { review: GoogleReview }) {
 
 function ReviewQuote({ review, dark = false, compact = false }: { review: GoogleReview; dark?: boolean; compact?: boolean }) {
   const quote = review.text || review.originalText;
+  const quoteRef = useRef<HTMLQuoteElement>(null);
+  const [expanded, setExpanded] = useState(false);
+  const [hasMore, setHasMore] = useState(false);
+
+  useEffect(() => {
+    const quoteElement = quoteRef.current;
+    if (!quoteElement || compact || expanded) return;
+
+    const measureOverflow = () => {
+      setHasMore(quoteElement.scrollHeight > quoteElement.clientHeight + 1);
+    };
+
+    measureOverflow();
+    const observer = new ResizeObserver(measureOverflow);
+    observer.observe(quoteElement);
+    return () => observer.disconnect();
+  }, [quote, compact, expanded]);
+
   return (
     <figure>
       {typeof review.rating === "number" && (
@@ -79,9 +97,22 @@ function ReviewQuote({ review, dark = false, compact = false }: { review: Google
           <Stars rating={review.rating} />
         </div>
       )}
-      <blockquote className={`mt-3 leading-relaxed ${compact ? "line-clamp-3" : ""} ${dark ? "text-secondary" : "text-white"}`}>
+      <blockquote
+        ref={quoteRef}
+        className={`mt-3 leading-relaxed ${compact ? "line-clamp-3" : !expanded ? "line-clamp-6" : ""} ${dark ? "text-secondary" : "text-white"}`}
+      >
         {quote ? `“${quote}”` : "This customer left a star rating without a written comment."}
       </blockquote>
+      {!compact && hasMore && (
+        <button
+          type="button"
+          aria-expanded={expanded}
+          onClick={() => setExpanded((current) => !current)}
+          className="mt-2 text-sm font-semibold text-secondary underline underline-offset-4 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-secondary"
+        >
+          {expanded ? "Show less" : "Click for more"}
+        </button>
+      )}
       <figcaption>
         <ReviewAuthor review={review} />
       </figcaption>
