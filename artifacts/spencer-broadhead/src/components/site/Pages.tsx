@@ -1,7 +1,7 @@
 import { ArrowRight, Home as HomeIcon, Mail, Phone } from "lucide-react";
 import { Btn, Eyebrow } from "./ui";
 import { Bodywork, Hero, How, NextSteps, PageIntro, Services, Story, Visit } from "./Sections";
-import { HomeTestimonials, TestimonialWall } from "./Testimonials";
+import { GoogleReviewsWall, HomeGoogleReviews } from "./GoogleReviews";
 import { MAILTO, PHONE, TEL, page } from "./data";
 
 function Overview() {
@@ -61,7 +61,7 @@ export function HomePage() {
       <Hero />
       <Overview />
       <LocalGarageInformation />
-      <HomeTestimonials />
+      <HomeGoogleReviews />
     </>
   );
 }
@@ -154,10 +154,10 @@ export function TestimonialsPage() {
       <PageIntro
         eyebrow="Customer testimonials"
         title="What our customers say"
-        lead="A few words from the people who bring their cars to George Street. Printed exactly as they wrote them."
+        lead="Reviews shared by customers on Google."
         image="garage-outside.jpg"
       />
-      <TestimonialWall />
+      <GoogleReviewsWall />
       <NextSteps
         items={[
           { id: "team", href: page("/our-team"), label: "Meet the team", line: "The familiar faces behind the service people talk about." },

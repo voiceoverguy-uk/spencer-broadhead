@@ -27,6 +27,12 @@ The user wants testimonial dates omitted and a randomly rotating selection on th
 
 **How to apply:** Preserve the genuine customer wording and attribution without displaying dates or implying the old quotes are new reviews.
 
+The user subsequently chose live Google review cards instead of the original website's static testimonials.
+
+**Why:** The user selected “Live Google review cards” when asked how Google reviews should appear.
+
+**How to apply:** Keep the integration compatible with static Vercel hosting. Treat the Maps browser key as browser-visible and require API and referrer restrictions. Do not claim a listing or live reviews are verified unless Google actually returns the matching business. Do not silently substitute old testimonials when Google fails.
+
 The user dislikes chunky heading lettering and wants softer typography that remains businesslike.
 
 **Why:** The user explicitly rejected the heavy condensed “Meet the team” heading.

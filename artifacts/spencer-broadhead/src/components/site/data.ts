@@ -43,7 +43,6 @@ export const NAV: { key: RouteKey; href: string; label: string }[] = [
   { key: "testimonials", href: page("/testimonials"), label: "Reviews" },
   { key: "contact", href: page("/contact"), label: "Contact" },
 ];
-
 export const SERVICES = [
   { code: "01", name: "Servicing", line: "Interim and full services to keep your car running as it should. We tell you what it needs, and what it doesn't." },
   { code: "02", name: "MOT testing", line: "MOT tests carried out on site. If something needs attention, we'll explain it plainly before any work goes ahead." },
@@ -55,10 +54,3 @@ export const SERVICES = [
   { code: "08", name: "Exhausts", line: "Blowing, rattling or failing the MOT. Exhaust repairs and replacements." },
 ];
 
-/** Genuine customer testimonials, quoted exactly. Deliberately undated. */
-export const TESTIMONIALS: { id: string; name: string; quote: string }[] = [
-  { id: "watterson", name: "C. Watterson", quote: "Superb, efficient and friendly service at Spencer and Broadhead, so pleased to have found a garage I can trust 100%" },
-  { id: "bowers", name: "A. Bowers", quote: "Always fantastic service from this local family run garage - Spencer and Broadhead - they always go that extra mile to assist you - have helped us out when we have needed help quickly. Thank you! - Wouldn't go anywhere else now. Would definitely recommend." },
-  { id: "gothard", name: "E. Gothard", quote: "Excellent & efficient service received. Would definitely recommend this garage." },
-  { id: "dykes", name: "S. Dykes", quote: "The best garage in Wakefield - efficient friendly service and competent staff the only garage I would use." },
-];
