@@ -27,7 +27,7 @@ The user wants testimonial dates omitted and a randomly rotating selection on th
 
 **How to apply:** Preserve the genuine customer wording and attribution without displaying dates or implying the old quotes are new reviews.
 
-The user subsequently chose live Google review cards instead of the original website's static testimonials.
+The user subsequently chose live Google review cards instead of the original website's static testimonials, and approved “randomise and cycle”: randomise the opening review and show all returned reviews before repeating, without controls.
 
 **Why:** The user selected “Live Google review cards” when asked how Google reviews should appear.
 

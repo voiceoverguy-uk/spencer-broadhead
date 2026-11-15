@@ -44,6 +44,19 @@ globalThis.window = {
 };
 
 try {
+  const { shuffledReviewOrder } = await server.ssrLoadModule("/src/lib/review-order.ts");
+  assert.deepEqual(shuffledReviewOrder(0), []);
+  assert.deepEqual(shuffledReviewOrder(1, 0), [0]);
+  let previous = -1;
+  const openingReviews = new Set();
+  for (let cycle = 0; cycle < 100; cycle++) {
+    const order = shuffledReviewOrder(5, previous);
+    assert.deepEqual([...order].sort(), [0, 1, 2, 3, 4], "Every review must appear once per cycle.");
+    assert.notEqual(order[0], previous, "Cycle boundaries must not repeat the same review.");
+    openingReviews.add(order[0]);
+    previous = order.at(-1);
+  }
+  assert(openingReviews.size > 1, "The opening review should vary.");
   const { loadBusinessReviews, BUSINESS_PLACE_ID, GOOGLE_REVIEWS_URL } =
     await server.ssrLoadModule("/src/lib/google-reviews.ts");
   const first = loadBusinessReviews();
@@ -64,7 +77,7 @@ try {
   rejectRequest = false;
   await loadBusinessReviews();
   assert.equal(requests, 4, "Failed requests must allow a later retry.");
-  console.log("Google review checks passed: exact listing, deduplication, attribution fields, mismatch rejection and retry.");
+  console.log("Google review checks passed: shuffled full cycles, no adjacent repeats, exact listing, deduplication, attribution fields, mismatch rejection and retry.");
 } finally {
   delete globalThis.window;
   await server.close();

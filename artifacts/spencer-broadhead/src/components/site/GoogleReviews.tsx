@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import { page } from "./data";
 import { GOOGLE_REVIEWS_URL, loadBusinessReviews, type GoogleReview } from "@/lib/google-reviews";
+import { shuffledReviewOrder } from "@/lib/review-order";
 
 const REVIEW_INTERVAL = 8000;
 const GOOGLE_LOGO =
@@ -165,9 +166,17 @@ function ReviewError({ dark = false, status }: { dark?: boolean; status: Reviews
 
 export function HomeGoogleReviews() {
   const { data, status } = useGoogleReviews();
-  const [current, setCurrent] = useState(0);
+  const [sequence, setSequence] = useState<{ order: number[]; position: number }>({
+    order: [],
+    position: 0,
+  });
   const [hidden, setHidden] = useState(false);
   const [canRotate, setCanRotate] = useState(false);
+  const reviewCount = data?.reviews.length ?? 0;
+
+  useEffect(() => {
+    setSequence({ order: shuffledReviewOrder(reviewCount), position: 0 });
+  }, [reviewCount]);
 
   useEffect(() => {
     setCanRotate(!window.matchMedia("(prefers-reduced-motion: reduce)").matches);
@@ -178,17 +187,22 @@ export function HomeGoogleReviews() {
   }, []);
 
   const next = useCallback(() => {
-    if (!data?.reviews.length) return;
-    setCurrent((index) => (index + 1 + Math.floor(Math.random() * (data.reviews.length - 1 || 1))) % data.reviews.length);
-  }, [data]);
+    setSequence(({ order, position }) => {
+      if (position + 1 < order.length) return { order, position: position + 1 };
+      return {
+        order: shuffledReviewOrder(reviewCount, order[position]),
+        position: 0,
+      };
+    });
+  }, [reviewCount]);
 
   useEffect(() => {
-    if (!canRotate || hidden || (data?.reviews.length ?? 0) < 2) return;
+    if (!canRotate || hidden || sequence.order.length < 2) return;
     const timer = window.setTimeout(next, REVIEW_INTERVAL);
     return () => window.clearTimeout(timer);
-  }, [canRotate, current, data?.reviews.length, hidden, next]);
+  }, [canRotate, sequence, hidden, next]);
 
-  const review = data?.reviews[current];
+  const review = data?.reviews[sequence.order[sequence.position] ?? 0];
 
   return (
     <section
