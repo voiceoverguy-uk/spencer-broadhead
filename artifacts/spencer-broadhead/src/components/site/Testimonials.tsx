@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import { ArrowLeft, ArrowRight, Pause, Play } from "lucide-react";
-import { Eyebrow, Reveal } from "./ui";
+import { ArrowRight } from "lucide-react";
+import { Reveal } from "./ui";
 import { TESTIMONIALS, page } from "./data";
 
 const INTERVAL = 8000;
@@ -32,10 +32,7 @@ export function HomeTestimonials() {
     pos: 0,
   }));
   const [playing, setPlaying] = useState(true);
-  const [hover, setHover] = useState(false);
-  const [focus, setFocus] = useState(false);
   const [hidden, setHidden] = useState(false);
-  const [tick, setTick] = useState(0);
 
   // Randomise once on the client, keeping the server-rendered first quote in place.
   useEffect(() => {
@@ -48,23 +45,22 @@ export function HomeTestimonials() {
     return () => document.removeEventListener("visibilitychange", onVis);
   }, []);
 
-  const step = useCallback((dir: 1 | -1) => {
-    setTick((t) => t + 1);
+  const step = useCallback(() => {
     setSequence((sequence) => {
-      const next = sequence.pos + dir;
+      const next = sequence.pos + 1;
       if (next >= N) {
         return { order: shuffled(sequence.order[sequence.pos]), pos: 0 };
       }
-      return { ...sequence, pos: Math.max(0, next) };
+      return { ...sequence, pos: next };
     });
   }, []);
 
-  const running = playing && !hover && !focus && !hidden;
+  const running = playing && !hidden;
   useEffect(() => {
     if (!running) return;
-    const t = window.setTimeout(() => step(1), INTERVAL);
+    const t = window.setTimeout(step, INTERVAL);
     return () => window.clearTimeout(t);
-  }, [running, pos, tick, step]);
+  }, [running, pos, step]);
 
   const current = order[pos];
   const t = TESTIMONIALS[current];
@@ -86,10 +82,6 @@ export function HomeTestimonials() {
           role="region"
           aria-roledescription="carousel"
           aria-label="Customer testimonials"
-          onMouseEnter={() => setHover(true)}
-          onMouseLeave={() => setHover(false)}
-          onFocus={() => setFocus(true)}
-          onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget as Node)) setFocus(false); }}
         >
           {/* Stacked grid: every quote occupies the same cell, so height = longest quote. No jumps. */}
           <div className="grid" aria-live={running ? "off" : "polite"}>
@@ -117,29 +109,6 @@ export function HomeTestimonials() {
             })}
           </div>
 
-          <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-white/15 pt-3">
-            <button type="button" onClick={() => step(-1)} disabled={pos === 0} aria-label="Previous testimonial" data-testid="button-testimonial-prev"
-              className="grid h-9 w-9 place-items-center rounded-md border border-white/25 transition-colors hover:bg-white hover:text-secondary disabled:opacity-35 disabled:hover:bg-transparent disabled:hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F4C430]">
-              <ArrowLeft className="h-3.5 w-3.5" aria-hidden />
-            </button>
-            <button type="button" onClick={() => step(1)} aria-label="Next testimonial" data-testid="button-testimonial-next"
-              className="grid h-9 w-9 place-items-center rounded-md border border-white/25 transition-colors hover:bg-white hover:text-secondary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F4C430]">
-              <ArrowRight className="h-3.5 w-3.5" aria-hidden />
-            </button>
-            <button type="button" onClick={() => setPlaying((p) => !p)} aria-label={playing ? "Pause testimonial rotation" : "Play testimonial rotation"} aria-pressed={!playing} data-testid="button-testimonial-toggle"
-              className="grid h-9 w-9 place-items-center rounded-md border border-white/25 transition-colors hover:bg-white hover:text-secondary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F4C430]">
-              {playing ? <Pause className="h-3.5 w-3.5" aria-hidden /> : <Play className="h-3.5 w-3.5" aria-hidden />}
-            </button>
-            <div className="ml-auto flex items-center gap-4">
-              <span className="font-mono text-xs text-white/60" data-testid="text-testimonial-count">
-                {String(pos + 1).padStart(2, "0")} / {String(N).padStart(2, "0")}
-              </span>
-              <span aria-hidden className="relative hidden h-[2px] w-24 overflow-hidden bg-white/15 sm:block">
-                <span key={`${pos}-${tick}`} className="absolute inset-0 origin-left bg-[#F4C430]"
-                  style={{ animation: `sb-progress ${INTERVAL}ms linear both`, animationPlayState: running ? "running" : "paused" }} />
-              </span>
-            </div>
-          </div>
         </div>
       </div>
     </section>

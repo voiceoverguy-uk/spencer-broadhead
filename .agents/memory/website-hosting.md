@@ -38,3 +38,9 @@ The user wants the site streamlined, closer to the simplicity of the original, w
 **Why:** The user liked the design but felt it had become very busy and repetitive.
 
 **How to apply:** Give each page a distinct purpose. Avoid repeating the garage story, large contact prompts and repair process across pages; keep homepage previews concise.
+
+The user wants enough accurate, relevant business information on the website to improve local search visibility.
+
+**Why:** They said the current site is not being found and asked for useful text Google can understand.
+
+**How to apply:** Use specific, helpful details about services, Wakefield/George Street, company history, expertise and customer process. Write naturally for visitors; avoid repetitive keyword stuffing and never guarantee rankings.

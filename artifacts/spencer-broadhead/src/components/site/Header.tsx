@@ -4,7 +4,15 @@ import { NAV, PHONE, TEL, img, page, type RouteKey } from "./data";
 
 export function Header({ current }: { current: RouteKey }) {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const btnRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const update = () => setScrolled(window.scrollY > 12);
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    return () => window.removeEventListener("scroll", update);
+  }, []);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -28,7 +36,11 @@ export function Header({ current }: { current: RouteKey }) {
 
   return (
     <header
-      className="fixed inset-x-0 top-0 z-50 border-b border-secondary/10 bg-white shadow-[0_8px_30px_-24px_rgba(28,39,89,.4)]"
+      className={`fixed inset-x-0 top-0 z-50 border-b transition-[background-color,backdrop-filter,box-shadow] duration-300 ${
+        scrolled && !open
+          ? "border-secondary/5 bg-white/80 shadow-[0_8px_30px_-24px_rgba(28,39,89,.4)] backdrop-blur-xl"
+          : "border-secondary/10 bg-white shadow-[0_8px_30px_-24px_rgba(28,39,89,.4)]"
+      }`}
     >
       <div className="mx-auto flex h-[76px] max-w-7xl items-center justify-between px-5 md:px-8">
         <a href={page("/")} data-testid="link-home" className="flex items-center gap-3" aria-label="Spencer & Broadhead, home" aria-current={current === "home" ? "page" : undefined}>

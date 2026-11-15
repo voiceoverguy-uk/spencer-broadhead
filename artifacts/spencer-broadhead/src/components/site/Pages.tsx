@@ -29,11 +29,38 @@ function Overview() {
   );
 }
 
+function LocalGarageInformation() {
+  return (
+    <section aria-labelledby="local-garage-title" className="border-y border-border bg-muted/60">
+      <div className="mx-auto grid max-w-7xl gap-8 px-5 py-14 md:px-8 md:py-16 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+        <div>
+          <Eyebrow>Independent garage in Wakefield</Eyebrow>
+          <h2 id="local-garage-title" className="mt-5 max-w-md text-3xl font-semibold leading-tight text-secondary md:text-4xl">
+            Local experience, straightforward advice
+          </h2>
+        </div>
+        <div className="space-y-5 leading-relaxed text-muted-foreground">
+          <p>
+            Established on George Street in 1969 by Ray Spencer and Barry Broadhead, Spencer &amp; Broadhead is an independent, family-run garage in central Wakefield. Our technicians look after a wide range of vehicle needs, from car servicing and MOT testing to diagnostics and mechanical repairs.
+          </p>
+          <p>
+            We take time to find the cause of a problem, explain what we find in plain English and agree the work with you before we go ahead. We’re an RAC Repair &amp; Go approved garage, serving Wakefield motorists, commuters and local businesses. A loan car may be available by arrangement, subject to availability.
+          </p>
+          <p className="text-secondary">
+            Find out more about our <a className="font-semibold underline underline-offset-4" href={page("/services")}>garage services</a>, or <a className="font-semibold underline underline-offset-4" href={page("/contact")}>call or visit us on George Street</a>.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export function HomePage() {
   return (
     <>
       <Hero />
       <Overview />
+      <LocalGarageInformation />
       <HomeTestimonials />
     </>
   );
