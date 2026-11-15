@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { ArrowRight, ArrowUpRight, Car, Clock, Mail, MapPin, Phone, ShieldCheck, Wrench, MessageSquare, ClipboardCheck, KeyRound } from "lucide-react";
 import { Btn, Eyebrow, Reveal } from "./ui";
 import { ImagePopup } from "./ImagePopup";
@@ -227,11 +227,56 @@ export function Exterior() {
 }
 
 export function Visit() {
+  const [currentTime, setCurrentTime] = useState<number | null>(null);
   const hours = [
     ["Monday to Friday", "08:30 – 17:30"],
     ["Saturday", "By appointment"],
     ["Sunday", "By appointment"],
   ];
+
+  useEffect(() => {
+    setCurrentTime(Date.now());
+    const timer = window.setInterval(() => setCurrentTime(Date.now()), 60_000);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  const todayStatus = currentTime === null ? null : (() => {
+    const parts = new Intl.DateTimeFormat("en-GB", {
+      timeZone: "Europe/London",
+      weekday: "long",
+      hour: "2-digit",
+      minute: "2-digit",
+      hourCycle: "h23",
+    }).formatToParts(currentTime);
+    const value = (type: Intl.DateTimeFormatPartTypes) => parts.find((part) => part.type === type)?.value ?? "";
+    const weekday = value("weekday");
+
+    if (weekday === "Saturday" || weekday === "Sunday") {
+      return { open: false, text: `${weekday} · By appointment only` };
+    }
+
+    const minutesNow = Number(value("hour")) * 60 + Number(value("minute"));
+    const opensAt = 8 * 60 + 30;
+    const closesAt = 17 * 60 + 30;
+    const duration = (totalMinutes: number) => {
+      const rounded = Math.max(1, Math.ceil(totalMinutes));
+      const hoursLeft = Math.floor(rounded / 60);
+      const minutesLeft = rounded % 60;
+      const parts = [];
+      if (hoursLeft) parts.push(`${hoursLeft} ${hoursLeft === 1 ? "hour" : "hours"}`);
+      if (minutesLeft) parts.push(`${minutesLeft} ${minutesLeft === 1 ? "minute" : "minutes"}`);
+      return parts.join(" ");
+    };
+
+    if (minutesNow < opensAt) {
+      return { open: false, text: `Opens today in ${duration(opensAt - minutesNow)}` };
+    }
+    if (minutesNow < closesAt) {
+      return { open: true, text: `Open now · Closes in ${duration(closesAt - minutesNow)}` };
+    }
+    return { open: false, text: "Closed for today" };
+  })();
+
   return (
     <section id="visit" className="bg-[#1C2759] text-white">
       <div className="mx-auto max-w-7xl px-5 py-24 md:px-8 md:py-28">
@@ -274,6 +319,16 @@ export function Visit() {
                   </div>
                 ))}
               </dl>
+              {todayStatus && (
+                <p
+                  className="mt-4 flex items-center gap-2 border-t border-white/10 pt-4 text-sm text-white/80"
+                  aria-live="polite"
+                  data-testid="text-todays-hours-status"
+                >
+                  <span className={`h-2 w-2 shrink-0 rounded-full ${todayStatus.open ? "bg-emerald-400" : "bg-white/40"}`} />
+                  {todayStatus.text}
+                </p>
+              )}
             </div>
           </Reveal>
           <Reveal className="lg:col-span-5" delay={120}>
